@@ -71,7 +71,7 @@ export function EntrarPage() {
               🧸
             </div>
             <div>
-              <p className="text-2xl font-black leading-tight lg:text-3xl">Agarra Mais</p>
+              <p className="text-2xl font-black leading-tight lg:text-3xl">Mico Leão</p>
               <p className="text-xs font-bold uppercase tracking-[0.18em] text-brand-yellow">Token Play</p>
             </div>
           </div>

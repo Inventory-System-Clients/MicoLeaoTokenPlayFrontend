@@ -10,7 +10,7 @@ export function PrivacidadePage() {
         <p className="text-xs font-black uppercase text-orange-700">Versao 2026-07-17</p>
         <h1 className="mt-2 text-3xl font-black">Politica de Privacidade</h1>
         <p className="mt-3 text-sm font-semibold text-gray-600">
-          Esta politica explica, de forma resumida, como o Agarra Mais trata dados pessoais para operar contas,
+          Esta politica explica, de forma resumida, como o Mico Leão trata dados pessoais para operar contas,
           fichas, jogadas, pedidos, atendimento e pagamentos.
         </p>
       </section>
@@ -34,7 +34,7 @@ export function PrivacidadePage() {
       <PolicySection title="Direitos do titular">
         Voce pode pedir confirmacao de tratamento, acesso, correcao, portabilidade, informacao sobre compartilhamento,
         revogacao do consentimento e eliminacao quando aplicavel. Solicite pelo canal de atendimento informado pela
-        empresa operadora do Agarra Mais.
+        empresa operadora do Mico Leão.
       </PolicySection>
 
       <PolicySection title="Seguranca e retencao">

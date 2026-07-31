@@ -1736,7 +1736,7 @@ export function AdminPage({ initialTab = "summary" }: { initialTab?: AdminTab })
         </head>
         <body>
           <main class="label">
-            <p class="brand">Agarra Mais</p>
+            <p class="brand">Mico Leão</p>
             <p class="subtitle">Token Play</p>
             <img class="qr" src="${qrImageUrl}" alt="QR Code da maquina" />
             <p class="machine">${escapePrintText(machine.name)}</p>
@@ -1791,7 +1791,7 @@ export function AdminPage({ initialTab = "summary" }: { initialTab?: AdminTab })
               <h1 className="text-3xl font-black text-white sm:text-4xl">Painel Admin</h1>
             </div>
             <p className="max-w-2xl text-sm font-medium text-white/70">
-              Gestão da operação digital Agarra Mais com pagamentos, máquinas e campanhas em tempo real.
+              Gestão da operação digital Mico Leão com pagamentos, máquinas e campanhas em tempo real.
             </p>
           </div>
           <div className="grid grid-cols-3 gap-2 rounded-2xl bg-white/10 p-2 text-center ring-1 ring-white/15">

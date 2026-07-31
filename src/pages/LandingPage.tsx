@@ -38,7 +38,7 @@ export function LandingPage() {
               🧸
             </div>
             <div>
-              <p className="text-xl font-black leading-tight text-white drop-shadow">Agarra Mais</p>
+              <p className="text-xl font-black leading-tight text-white drop-shadow">Mico Leão</p>
               <p className="text-[11px] font-black uppercase tracking-[0.2em] text-brand-yellow">Token Play</p>
             </div>
           </div>

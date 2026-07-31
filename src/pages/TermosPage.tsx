@@ -10,7 +10,7 @@ export function TermosPage() {
         <p className="text-xs font-black uppercase text-orange-700">Versao 2026-07-17</p>
         <h1 className="mt-2 text-3xl font-black">Termos de Uso</h1>
         <p className="mt-3 text-sm font-semibold text-gray-600">
-          Ao usar o Agarra Mais, voce concorda com as regras basicas para compra de fichas, uso das maquinas,
+          Ao usar o Mico Leão, voce concorda com as regras basicas para compra de fichas, uso das maquinas,
           resgate de produtos e protecao da sua conta.
         </p>
       </section>

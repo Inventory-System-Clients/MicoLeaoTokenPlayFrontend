@@ -1,5 +1,5 @@
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3333";
-const TOKEN_STORAGE_KEY = "agarramais.token";
+const TOKEN_STORAGE_KEY = "mico-leao.token";
 
 export function getToken(): string | null {
   return window.localStorage.getItem(TOKEN_STORAGE_KEY);

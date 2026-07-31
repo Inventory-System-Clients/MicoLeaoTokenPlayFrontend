@@ -5,7 +5,7 @@ export type PendingCheckout = {
   id: string;
 };
 
-const PENDING_CHECKOUT_KEY = "agarramais.pendingCheckout";
+const PENDING_CHECKOUT_KEY = "mico-leao.pendingCheckout";
 
 export function setPendingCheckout(checkout: PendingCheckout | null): void {
   if (checkout) {

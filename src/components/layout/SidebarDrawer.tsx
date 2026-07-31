@@ -8,12 +8,37 @@ type SidebarDrawerProps = {
 };
 
 const LINKS = [
-  { to: "/inicio", label: "Inicio", description: "Promocoes e ofertas", icon: "🎯" },
+  {
+    to: "/inicio",
+    label: "Inicio",
+    description: "Promocoes e ofertas",
+    icon: "🎯",
+  },
   { to: "/lojas", label: "Lojas", description: "Escolher unidade", icon: "🏬" },
-  { to: "/fichas", label: "Loja de Fichas", description: "Comprar fichas", icon: "💳" },
-  { to: "/loja", label: "Loja de Produtos", description: "Trocar fichas, pontos ou dinheiro", icon: "🛍️" },
-  { to: "/meus-pedidos", label: "Meus Pedidos", description: "Produtos a receber", icon: "📦" },
-  { to: "/minha-privacidade", label: "Minha Privacidade", description: "Dados e LGPD", icon: "LG" },
+  {
+    to: "/fichas",
+    label: "Loja de Fichas",
+    description: "Comprar fichas",
+    icon: "💳",
+  },
+  {
+    to: "/loja",
+    label: "Loja de Produtos",
+    description: "Trocar fichas, pontos ou dinheiro",
+    icon: "🛍️",
+  },
+  {
+    to: "/meus-pedidos",
+    label: "Meus Pedidos",
+    description: "Produtos a receber",
+    icon: "📦",
+  },
+  {
+    to: "/minha-privacidade",
+    label: "Minha Privacidade",
+    description: "Dados e LGPD",
+    icon: "LG",
+  },
 ];
 
 function isAdminToken(): boolean {
@@ -21,7 +46,9 @@ function isAdminToken(): boolean {
   if (!token) return false;
 
   try {
-    const payload = JSON.parse(window.atob(token.split(".")[1].replace(/-/g, "+").replace(/_/g, "/")));
+    const payload = JSON.parse(
+      window.atob(token.split(".")[1].replace(/-/g, "+").replace(/_/g, "/")),
+    );
     return payload.role === "ADMIN";
   } catch {
     return false;
@@ -35,12 +62,27 @@ export function SidebarDrawer({ open, onClose }: SidebarDrawerProps) {
   const links = isAdminToken()
     ? [
         ...LINKS,
-        { to: "/admin", label: "Admin", description: "Gestao completa", icon: "⚙️" },
-        { to: "/admin/pedidos", label: "Produtos a Entregar", description: "Fila de entregas", icon: "📮" },
-        { to: "/admin/relatorios", label: "Relatorios", description: "Indicadores e rankings", icon: "📈" },
+        {
+          to: "/admin",
+          label: "Admin",
+          description: "Gestao completa",
+          icon: "⚙️",
+        },
+        {
+          to: "/admin/pedidos",
+          label: "Produtos a Entregar",
+          description: "Fila de entregas",
+          icon: "📮",
+        },
+        {
+          to: "/admin/relatorios",
+          label: "Relatorios",
+          description: "Indicadores e rankings",
+          icon: "📈",
+        },
       ]
     : LINKS;
-  const name = navbar?.name ?? "Agarra Mais";
+  const name = navbar?.name ?? "Mico Leão";
   const creditBalance = navbar?.creditBalance ?? 0;
   const levelName = navbar?.currentLevelName ?? "Iniciante";
   const progressPercentage = navbar?.progressPercentage ?? 0;
@@ -63,16 +105,31 @@ export function SidebarDrawer({ open, onClose }: SidebarDrawerProps) {
         }`}
       >
         <div className="relative shrink-0 overflow-hidden bg-slate-950 px-5 pb-5 pt-4 text-white">
-          <span aria-hidden className="absolute -right-10 -top-10 h-32 w-32 rounded-full bg-brand-yellow/25" />
-          <span aria-hidden className="absolute bottom-2 right-14 h-12 w-12 rounded-full bg-orange-500/25" />
+          <span
+            aria-hidden
+            className="absolute -right-10 -top-10 h-32 w-32 rounded-full bg-brand-yellow/25"
+          />
+          <span
+            aria-hidden
+            className="absolute bottom-2 right-14 h-12 w-12 rounded-full bg-orange-500/25"
+          />
           <div className="relative flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <span aria-hidden className="flex h-10 w-10 items-center justify-center rounded-2xl bg-brand-yellow text-xl shadow-lg shadow-amber-500/20">
-                🧸
+              <span
+                aria-hidden
+                className="flex h-10 w-10 items-center justify-center rounded-2xl bg-brand-yellow shadow-lg shadow-amber-500/20"
+              >
+                <img
+                  src="/LogoMicoLeao.png"
+                  alt=""
+                  className="h-full w-full rounded-2xl object-cover"
+                />
               </span>
               <div>
-                <p className="text-lg font-black leading-tight">Agarra Mais</p>
-                <p className="text-xs font-semibold text-white/55">Token Play</p>
+                <p className="text-lg font-black leading-tight">Mico Leão</p>
+                <p className="text-xs font-semibold text-white/55">
+                  Token Play
+                </p>
               </div>
             </div>
             <button
@@ -89,12 +146,20 @@ export function SidebarDrawer({ open, onClose }: SidebarDrawerProps) {
             <p className="truncate text-sm font-bold text-white/75">{name}</p>
             <div className="mt-1 flex items-end justify-between gap-3">
               <div>
-                <p className="text-2xl font-black text-brand-yellow">{creditBalance}</p>
-                <p className="text-xs font-bold uppercase text-white/50">Fichas</p>
+                <p className="text-2xl font-black text-brand-yellow">
+                  {creditBalance}
+                </p>
+                <p className="text-xs font-bold uppercase text-white/50">
+                  Fichas
+                </p>
               </div>
               <div className="text-right">
-                <p className="text-sm font-bold text-white">Nivel {levelName}</p>
-                <p className="text-xs font-semibold text-white/50">{progressPercentage}% completo</p>
+                <p className="text-sm font-bold text-white">
+                  Nivel {levelName}
+                </p>
+                <p className="text-xs font-semibold text-white/50">
+                  {progressPercentage}% completo
+                </p>
               </div>
             </div>
             <div className="mt-3 h-2 overflow-hidden rounded-full bg-white/15">
@@ -107,12 +172,16 @@ export function SidebarDrawer({ open, onClose }: SidebarDrawerProps) {
         </div>
 
         <div className="shrink-0 px-4 pb-2 pt-4">
-          <p className="px-2 text-xs font-black uppercase tracking-[0.18em] text-gray-400">Navegacao</p>
+          <p className="px-2 text-xs font-black uppercase tracking-[0.18em] text-gray-400">
+            Navegacao
+          </p>
         </div>
 
         <ul className="min-h-0 flex-1 space-y-2 overflow-y-auto overscroll-contain px-3 pb-3 [scrollbar-gutter:stable]">
           {links.map((link) => {
-            const active = location.pathname === link.to || location.pathname.startsWith(`${link.to}/`);
+            const active =
+              location.pathname === link.to ||
+              location.pathname.startsWith(`${link.to}/`);
             return (
               <li key={link.to}>
                 <Link
@@ -127,18 +196,27 @@ export function SidebarDrawer({ open, onClose }: SidebarDrawerProps) {
                   <span
                     aria-hidden
                     className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl text-xl ${
-                      active ? "bg-white/35" : "bg-slate-100 group-hover:bg-white"
+                      active
+                        ? "bg-white/35"
+                        : "bg-slate-100 group-hover:bg-white"
                     }`}
                   >
                     {link.icon}
                   </span>
                   <span className="min-w-0 flex-1">
-                    <span className="block truncate font-black">{link.label}</span>
-                    <span className={`block truncate text-xs font-semibold ${active ? "text-brand-black/65" : "text-gray-500"}`}>
+                    <span className="block truncate font-black">
+                      {link.label}
+                    </span>
+                    <span
+                      className={`block truncate text-xs font-semibold ${active ? "text-brand-black/65" : "text-gray-500"}`}
+                    >
                       {link.description}
                     </span>
                   </span>
-                  <span aria-hidden className={`text-lg ${active ? "text-brand-black" : "text-gray-300"}`}>
+                  <span
+                    aria-hidden
+                    className={`text-lg ${active ? "text-brand-black" : "text-gray-300"}`}
+                  >
                     ›
                   </span>
                 </Link>

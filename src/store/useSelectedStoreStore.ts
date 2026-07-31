@@ -16,6 +16,6 @@ export const useSelectedStoreStore = create<SelectedStoreState>()(
       selectStore: (storeId, storeName) => set({ storeId, storeName }),
       clearStore: () => set({ storeId: null, storeName: null }),
     }),
-    { name: "agarramais.selected-store" },
+    { name: "mico-leao.selected-store" },
   ),
 );
