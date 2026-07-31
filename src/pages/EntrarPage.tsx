@@ -1,0 +1,270 @@
+import { useState, type FormEvent } from "react";
+import { Link, Navigate, useNavigate } from "react-router-dom";
+import { useAuthStore } from "@/store/useAuthStore";
+import { ApiError } from "@/lib/api";
+
+export function EntrarPage() {
+  const navigate = useNavigate();
+  const token = useAuthStore((state) => state.token);
+  const login = useAuthStore((state) => state.login);
+  const register = useAuthStore((state) => state.register);
+  const loading = useAuthStore((state) => state.loading);
+
+  const [mode, setMode] = useState<"login" | "register">("login");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [cpf, setCpf] = useState("");
+  const [phone, setPhone] = useState("");
+  const [password, setPassword] = useState("");
+  const [privacyAccepted, setPrivacyAccepted] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const isRegisterMode = mode === "register";
+
+  if (token) {
+    return <Navigate to="/inicio" replace />;
+  }
+
+  async function handleSubmit(event: FormEvent) {
+    event.preventDefault();
+    setError(null);
+    try {
+      if (isRegisterMode) {
+        if (!privacyAccepted) {
+          setError("Você precisa aceitar a Política de Privacidade e os Termos de Uso.");
+          return;
+        }
+        await register({
+          name,
+          email,
+          cpf,
+          phone: phone || undefined,
+          password,
+          privacyAccepted: true,
+          privacyVersion: "2026-07-17",
+        });
+      } else {
+        await login(email, password);
+      }
+      navigate("/inicio");
+    } catch (err) {
+      setError(
+        err instanceof ApiError
+          ? err.message
+          : isRegisterMode
+            ? "Não foi possível criar o cadastro"
+            : "Não foi possível entrar",
+      );
+    }
+  }
+
+  return (
+    <div className="auth-viewport min-h-dvh overflow-hidden bg-[#060814] text-white">
+      <main className="relative mx-auto grid min-h-dvh w-full max-w-6xl lg:grid-cols-[minmax(0,1fr)_minmax(410px,0.78fr)] lg:items-center lg:gap-10 lg:px-8">
+        <section className="auth-hero relative px-5 pb-8 pt-7 lg:px-0 lg:py-12">
+          <span aria-hidden className="absolute -right-10 top-8 h-36 w-36 rounded-full bg-brand-yellow/25 blur-sm lg:right-10 lg:h-56 lg:w-56" />
+          <span aria-hidden className="absolute right-20 top-0 h-20 w-20 rounded-full bg-orange-500/20 blur-sm lg:right-64 lg:h-28 lg:w-28" />
+          <span aria-hidden className="absolute -left-8 bottom-6 h-24 w-24 rounded-full bg-sky-500/15 blur-sm lg:h-36 lg:w-36" />
+
+          <div className="relative flex items-center gap-3">
+            <div className="flex h-14 w-14 items-center justify-center rounded-3xl bg-gradient-to-br from-brand-yellow to-orange-400 text-3xl shadow-[0_14px_34px_rgba(245,158,11,0.32)]">
+              🧸
+            </div>
+            <div>
+              <p className="text-2xl font-black leading-tight lg:text-3xl">Agarra Mais</p>
+              <p className="text-xs font-bold uppercase tracking-[0.18em] text-brand-yellow">Token Play</p>
+            </div>
+          </div>
+
+          <div className="relative mt-7 lg:mt-16">
+            <div className="inline-flex rounded-full bg-white/10 px-3 py-1 text-xs font-black uppercase text-brand-yellow ring-1 ring-white/15">
+              Fichas, prêmios e diversão
+            </div>
+            <h1 className="mt-4 max-w-[12ch] text-4xl font-black leading-[0.95] tracking-tight sm:text-5xl lg:text-7xl">
+              Entre e comece a jogar.
+            </h1>
+            <p className="mt-4 max-w-xl text-sm font-semibold leading-relaxed text-white/70 sm:text-base lg:text-xl">
+              Compre fichas em segundos, escolha a loja e tente pegar sua próxima pelúcia.
+            </p>
+          </div>
+
+          <div className="relative mt-6 grid grid-cols-3 gap-2 sm:max-w-xl lg:mt-10 lg:gap-3">
+            <LoginBenefit icon="🎯" label="Máquinas online" />
+            <LoginBenefit icon="💳" label="Pix ou cartão" />
+            <LoginBenefit icon="🎁" label="Bônus ativos" />
+          </div>
+        </section>
+
+        <section className="relative -mt-3 rounded-t-[2rem] bg-white px-5 pb-7 pt-5 text-brand-black shadow-[0_-18px_48px_rgba(15,23,42,0.16)] lg:mt-0 lg:rounded-[2rem] lg:p-7">
+          <div className="mb-5 grid grid-cols-2 rounded-2xl bg-slate-100 p-1.5">
+            <button
+              type="button"
+              onClick={() => {
+                setMode("login");
+                setError(null);
+              }}
+              className={`rounded-xl py-3 text-sm font-black transition-all active:scale-[0.98] ${
+                !isRegisterMode
+                  ? "bg-gradient-to-r from-brand-yellow to-orange-400 text-brand-black shadow-[0_10px_22px_rgba(245,158,11,0.24)]"
+                  : "text-gray-500"
+              }`}
+            >
+              Entrar
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setMode("register");
+                setError(null);
+              }}
+              className={`rounded-xl py-3 text-sm font-black transition-all active:scale-[0.98] ${
+                isRegisterMode
+                  ? "bg-gradient-to-r from-brand-yellow to-orange-400 text-brand-black shadow-[0_10px_22px_rgba(245,158,11,0.24)]"
+                  : "text-gray-500"
+              }`}
+            >
+              Criar cadastro
+            </button>
+          </div>
+
+          <div className="mb-4 rounded-3xl bg-gradient-to-r from-amber-100 to-orange-100 px-4 py-3">
+            <p className="text-xs font-black uppercase text-orange-700">
+              {isRegisterMode ? "Novo jogador" : "Bem-vindo de volta"}
+            </p>
+            <p className="mt-1 text-sm font-bold text-brand-black">
+              {isRegisterMode
+                ? "Crie sua conta para guardar fichas, nível e histórico de jogadas."
+                : "Acesse sua carteira de fichas e veja as promoções do dia."}
+            </p>
+          </div>
+
+          <form onSubmit={handleSubmit} className="flex flex-col gap-3">
+            {isRegisterMode && (
+              <LoginField label="Nome">
+                <input
+                  type="text"
+                  required
+                  minLength={2}
+                  value={name}
+                  onChange={(event) => setName(event.target.value)}
+                  className={inputClass}
+                  placeholder="Seu nome"
+                />
+              </LoginField>
+            )}
+
+            <LoginField label="E-mail">
+              <input
+                type="email"
+                required
+                value={email}
+                onChange={(event) => setEmail(event.target.value)}
+                className={inputClass}
+                placeholder="voce@email.com"
+              />
+            </LoginField>
+
+            {isRegisterMode && (
+              <div className="grid grid-cols-2 gap-3">
+                <LoginField label="CPF">
+                  <input
+                    type="text"
+                    required
+                    minLength={11}
+                    maxLength={14}
+                    inputMode="numeric"
+                    value={cpf}
+                    onChange={(event) => setCpf(event.target.value)}
+                    className={inputClass}
+                    placeholder="000.000.000-00"
+                  />
+                </LoginField>
+
+                <LoginField label="Telefone">
+                  <input
+                    type="tel"
+                    minLength={8}
+                    maxLength={20}
+                    inputMode="tel"
+                    value={phone}
+                    onChange={(event) => setPhone(event.target.value)}
+                    className={inputClass}
+                    placeholder="(11) 99999-9999"
+                  />
+                </LoginField>
+              </div>
+            )}
+
+            <LoginField label="Senha">
+              <input
+                type="password"
+                required
+                value={password}
+                onChange={(event) => setPassword(event.target.value)}
+                className={inputClass}
+                placeholder="********"
+              />
+            </LoginField>
+
+            {error && (
+              <p className="rounded-2xl bg-red-50 px-4 py-3 text-sm font-bold text-red-600">
+                {error}
+              </p>
+            )}
+
+            {isRegisterMode && (
+              <label className="flex items-start gap-3 rounded-2xl border border-amber-100 bg-amber-50/60 px-4 py-3 text-xs font-bold leading-relaxed text-gray-600">
+                <input
+                  type="checkbox"
+                  checked={privacyAccepted}
+                  onChange={(event) => setPrivacyAccepted(event.target.checked)}
+                  className="mt-1 h-4 w-4 shrink-0 accent-orange-500"
+                />
+                <span>
+                  Li e aceito a{" "}
+                  <Link to="/privacidade" className="font-black text-orange-700 underline">
+                    Política de Privacidade
+                  </Link>{" "}
+                  e os{" "}
+                  <Link to="/termos" className="font-black text-orange-700 underline">
+                    Termos de Uso
+                  </Link>
+                  . Meus dados serão usados para criar minha conta, operar fichas, pedidos, pagamentos e histórico.
+                </span>
+              </label>
+            )}
+
+            <button
+              type="submit"
+              disabled={loading || (isRegisterMode && !privacyAccepted)}
+              className="home-cta mt-2 rounded-2xl bg-gradient-to-r from-brand-yellow to-orange-400 py-4 text-base font-black text-brand-black shadow-[0_16px_28px_rgba(245,158,11,0.28)] transition active:scale-[0.98] disabled:opacity-60"
+            >
+              {loading ? (isRegisterMode ? "Criando..." : "Entrando...") : isRegisterMode ? "Criar cadastro" : "Entrar e jogar"}
+            </button>
+          </form>
+        </section>
+      </main>
+    </div>
+  );
+}
+
+const inputClass =
+  "h-13 w-full rounded-2xl border border-amber-100 bg-amber-50/60 px-4 py-3 text-base font-bold text-brand-black outline-none transition placeholder:text-gray-400 focus:border-brand-yellow focus:bg-white focus:ring-2 focus:ring-brand-yellow/25";
+
+function LoginField({ label, children }: { label: string; children: React.ReactNode }) {
+  return (
+    <label className="flex flex-col gap-1.5 text-sm font-black text-brand-black">
+      {label}
+      {children}
+    </label>
+  );
+}
+
+function LoginBenefit({ icon, label }: { icon: string; label: string }) {
+  return (
+    <div className="rounded-2xl bg-white/10 px-2 py-3 text-center ring-1 ring-white/15 lg:px-4 lg:py-5">
+      <p className="text-2xl lg:text-3xl">{icon}</p>
+      <p className="mt-1 text-[10px] font-black uppercase leading-tight text-white/65 lg:text-xs">{label}</p>
+    </div>
+  );
+}

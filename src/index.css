@@ -1,0 +1,185 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body {
+  background-color: #ffffff;
+  color: #111111;
+  overscroll-behavior-y: none;
+}
+
+#root {
+  min-height: 100dvh;
+}
+
+/* App mobile-first: centraliza em telas largas, mas o miolo sempre se comporta como um app de celular */
+.app-viewport {
+  max-width: 480px;
+  margin-left: auto;
+  margin-right: auto;
+  min-height: 100dvh;
+  background-color: #ffffff;
+  position: relative;
+}
+
+.landing-shell {
+  background:
+    radial-gradient(circle at 80% 8%, rgba(246, 200, 51, 0.14), transparent 26%),
+    radial-gradient(circle at 8% 74%, rgba(249, 115, 22, 0.1), transparent 24%),
+    #060814;
+}
+
+.landing-viewport {
+  max-width: none;
+  width: 100%;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.home-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 18% 18%, rgba(246, 200, 51, 0.28), transparent 20%),
+    radial-gradient(circle at 78% 20%, rgba(249, 115, 22, 0.22), transparent 22%),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0 12%, transparent 12% 24%, rgba(255, 255, 255, 0.05) 24% 36%, transparent 36%);
+  opacity: 0.95;
+}
+
+.home-hero__glow {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(2px);
+  animation: float-soft 5s ease-in-out infinite;
+}
+
+.home-hero__glow--yellow {
+  right: -3rem;
+  top: -3rem;
+  width: 9rem;
+  height: 9rem;
+  background: rgba(246, 200, 51, 0.34);
+}
+
+.home-hero__glow--orange {
+  right: 3rem;
+  bottom: -2rem;
+  width: 5.5rem;
+  height: 5.5rem;
+  background: rgba(249, 115, 22, 0.28);
+  animation-delay: -1.5s;
+}
+
+.home-cta {
+  animation: cta-pulse 1.9s ease-in-out infinite;
+}
+
+@keyframes float-soft {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(-0.4rem, 0.55rem, 0) scale(1.05);
+  }
+}
+
+@keyframes cta-pulse {
+  0%,
+  100% {
+    transform: translateY(0);
+    box-shadow: 0 16px 28px rgba(245, 158, 11, 0.28);
+  }
+  50% {
+    transform: translateY(-1px);
+    box-shadow: 0 20px 36px rgba(245, 158, 11, 0.38);
+  }
+}
+
+.landing-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(6, 8, 20, 0.62), rgba(10, 14, 30, 0.96) 62%, rgba(6, 8, 20, 1)),
+    radial-gradient(circle at 72% 17%, rgba(246, 200, 51, 0.16), transparent 26%),
+    radial-gradient(circle at 13% 56%, rgba(249, 115, 22, 0.12), transparent 24%);
+  opacity: 1;
+}
+
+.landing-spot {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(4px);
+  opacity: 0.62;
+  animation: float-soft 5.5s ease-in-out infinite;
+}
+
+.landing-spot--yellow {
+  right: -4rem;
+  top: 6rem;
+  width: 12rem;
+  height: 12rem;
+  background: rgba(246, 200, 51, 0.18);
+}
+
+.landing-spot--orange {
+  left: -3rem;
+  top: 20rem;
+  width: 8rem;
+  height: 8rem;
+  background: rgba(249, 115, 22, 0.14);
+  animation-delay: -1.3s;
+}
+
+.landing-spot--blue {
+  right: 3rem;
+  bottom: 7rem;
+  width: 7rem;
+  height: 7rem;
+  background: rgba(14, 165, 233, 0.1);
+  animation-delay: -2.4s;
+}
+
+.landing-cta {
+  animation: cta-pulse 1.8s ease-in-out infinite;
+}
+
+@media (min-width: 1024px) {
+  .landing-hero::before {
+    background:
+      linear-gradient(90deg, rgba(6, 8, 20, 0.5), rgba(10, 14, 30, 0.88) 56%, rgba(6, 8, 20, 1)),
+      radial-gradient(circle at 78% 18%, rgba(246, 200, 51, 0.18), transparent 22%),
+      radial-gradient(circle at 18% 68%, rgba(249, 115, 22, 0.13), transparent 20%);
+  }
+
+  .landing-spot--yellow {
+    right: 8%;
+    top: 9rem;
+    width: 18rem;
+    height: 18rem;
+  }
+
+  .landing-spot--orange {
+    left: 6%;
+    top: auto;
+    bottom: 7rem;
+    width: 12rem;
+    height: 12rem;
+  }
+
+  .landing-spot--blue {
+    right: 34%;
+    bottom: 8rem;
+    width: 10rem;
+    height: 10rem;
+  }
+}
