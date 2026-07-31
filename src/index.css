@@ -25,8 +25,8 @@ body {
 
 .landing-shell {
   background:
-    radial-gradient(circle at 80% 8%, rgba(246, 200, 51, 0.14), transparent 26%),
-    radial-gradient(circle at 8% 74%, rgba(249, 115, 22, 0.1), transparent 24%),
+    radial-gradient(circle at 80% 8%, rgba(244, 81, 30, 0.14), transparent 26%),
+    radial-gradient(circle at 8% 74%, rgba(255, 138, 61, 0.1), transparent 24%),
     #060814;
 }
 
@@ -48,8 +48,8 @@ body {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(circle at 18% 18%, rgba(246, 200, 51, 0.28), transparent 20%),
-    radial-gradient(circle at 78% 20%, rgba(249, 115, 22, 0.22), transparent 22%),
+    radial-gradient(circle at 18% 18%, rgba(244, 81, 30, 0.28), transparent 20%),
+    radial-gradient(circle at 78% 20%, rgba(255, 138, 61, 0.22), transparent 22%),
     linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0 12%, transparent 12% 24%, rgba(255, 255, 255, 0.05) 24% 36%, transparent 36%);
   opacity: 0.95;
 }
@@ -66,7 +66,7 @@ body {
   top: -3rem;
   width: 9rem;
   height: 9rem;
-  background: rgba(246, 200, 51, 0.34);
+  background: rgba(244, 81, 30, 0.34);
 }
 
 .home-hero__glow--orange {
@@ -74,7 +74,7 @@ body {
   bottom: -2rem;
   width: 5.5rem;
   height: 5.5rem;
-  background: rgba(249, 115, 22, 0.28);
+  background: rgba(255, 138, 61, 0.28);
   animation-delay: -1.5s;
 }
 
@@ -96,11 +96,11 @@ body {
   0%,
   100% {
     transform: translateY(0);
-    box-shadow: 0 16px 28px rgba(245, 158, 11, 0.28);
+    box-shadow: 0 16px 28px rgba(244, 81, 30, 0.28);
   }
   50% {
     transform: translateY(-1px);
-    box-shadow: 0 20px 36px rgba(245, 158, 11, 0.38);
+    box-shadow: 0 20px 36px rgba(244, 81, 30, 0.38);
   }
 }
 
@@ -110,8 +110,8 @@ body {
   inset: 0;
   background:
     linear-gradient(180deg, rgba(6, 8, 20, 0.62), rgba(10, 14, 30, 0.96) 62%, rgba(6, 8, 20, 1)),
-    radial-gradient(circle at 72% 17%, rgba(246, 200, 51, 0.16), transparent 26%),
-    radial-gradient(circle at 13% 56%, rgba(249, 115, 22, 0.12), transparent 24%);
+    radial-gradient(circle at 72% 17%, rgba(244, 81, 30, 0.16), transparent 26%),
+    radial-gradient(circle at 13% 56%, rgba(255, 138, 61, 0.12), transparent 24%);
   opacity: 1;
 }
 
@@ -128,7 +128,7 @@ body {
   top: 6rem;
   width: 12rem;
   height: 12rem;
-  background: rgba(246, 200, 51, 0.18);
+  background: rgba(244, 81, 30, 0.18);
 }
 
 .landing-spot--orange {
@@ -136,7 +136,7 @@ body {
   top: 20rem;
   width: 8rem;
   height: 8rem;
-  background: rgba(249, 115, 22, 0.14);
+  background: rgba(255, 138, 61, 0.14);
   animation-delay: -1.3s;
 }
 
@@ -157,8 +157,8 @@ body {
   .landing-hero::before {
     background:
       linear-gradient(90deg, rgba(6, 8, 20, 0.5), rgba(10, 14, 30, 0.88) 56%, rgba(6, 8, 20, 1)),
-      radial-gradient(circle at 78% 18%, rgba(246, 200, 51, 0.18), transparent 22%),
-      radial-gradient(circle at 18% 68%, rgba(249, 115, 22, 0.13), transparent 20%);
+      radial-gradient(circle at 78% 18%, rgba(244, 81, 30, 0.18), transparent 22%),
+      radial-gradient(circle at 18% 68%, rgba(255, 138, 61, 0.13), transparent 20%);
   }
 
   .landing-spot--yellow {

@@ -1,4 +1,4 @@
-const COLORS = ["#F6C833", "#FFFFFF", "#111111"];
+const COLORS = ["#F4511E", "#FF8A3D", "#FFFFFF"];
 const PIECES = Array.from({ length: 18 }, (_, index) => ({
   left: 4 + ((index * 137) % 92),
   delay: (index % 6) * 60,
@@ -7,7 +7,7 @@ const PIECES = Array.from({ length: 18 }, (_, index) => ({
 }));
 
 /**
- * Explosao rapida de confete (amarelo/branco/preto) exibida no momento em
+ * Explosao rapida de confete (laranja/amarelo/branco) exibida no momento em
  * que a telemetria confirma o pulso com sucesso. So decorativa: cada
  * particula usa "forwards" e some sozinha, sem precisar de timer/estado.
  */

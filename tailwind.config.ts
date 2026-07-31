@@ -5,12 +5,35 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
+        // Paleta alinhada com o projeto MicoLeaoSistemaGestao (novo sistema
+        // construido em cima deste front). brand.yellow mantem o nome por
+        // compatibilidade com as classes ja usadas nas paginas, mas agora
+        // aponta pro laranja-avermelhado (primary) da nova identidade.
         brand: {
-          yellow: "#F6C833",
+          yellow: "#F4511E",
           black: "#111111",
         },
         surface: {
-          soft: "#F9F9F9",
+          soft: "#FFF7F3",
+        },
+        primary: {
+          DEFAULT: "#F4511E",
+          light: "#FF7043",
+          dark: "#111111",
+        },
+        secondary: {
+          DEFAULT: "#FFE2D6",
+          light: "#FFF7F3",
+        },
+        background: {
+          dark: "#111111",
+          light: "#FFF7F3",
+        },
+        accent: {
+          orange: "#F4511E",
+          yellow: "#FF8A3D",
+          cream: "#FFE2D6",
+          red: "#E92D22",
         },
       },
       fontFamily: {
@@ -35,15 +58,15 @@ const config: Config = {
           "68%": { transform: "translate(-50%, -3px)" },
           "84%": { transform: "translate(-50%, 0)" },
         },
-        // Piscada suave em amarelo atras do saldo quando uma recarga e aprovada.
+        // Piscada suave atras do saldo quando uma recarga e aprovada.
         "flash-yellow": {
-          "0%, 100%": { backgroundColor: "rgba(246, 200, 51, 0)" },
-          "25%, 75%": { backgroundColor: "rgba(246, 200, 51, 0.55)" },
+          "0%, 100%": { backgroundColor: "rgba(244, 81, 30, 0)" },
+          "25%, 75%": { backgroundColor: "rgba(244, 81, 30, 0.55)" },
         },
         // Brilho pulsante no botao de confirmar, chamando o clique.
         "pulse-glow": {
-          "0%, 100%": { boxShadow: "0 0 0 0 rgba(246, 200, 51, 0.55)" },
-          "50%": { boxShadow: "0 0 0 9px rgba(246, 200, 51, 0)" },
+          "0%, 100%": { boxShadow: "0 0 0 0 rgba(244, 81, 30, 0.55)" },
+          "50%": { boxShadow: "0 0 0 9px rgba(244, 81, 30, 0)" },
         },
         "confetti-fall": {
           "0%": { transform: "translateY(-16px) rotate(0deg)", opacity: "1" },
