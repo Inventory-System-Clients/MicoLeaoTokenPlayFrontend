@@ -1004,7 +1004,7 @@ export function AdminPage({
     ],
   );
 
-  const handleTabsPointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
+  const handleTabsDragStart = (event: React.PointerEvent<HTMLDivElement>) => {
     const container = tabsRef.current;
     if (!container) return;
 
@@ -1014,10 +1014,10 @@ export function AdminPage({
       startScrollLeft: container.scrollLeft,
     };
 
-    container.setPointerCapture(event.pointerId);
+    event.currentTarget.setPointerCapture(event.pointerId);
   };
 
-  const handleTabsPointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
+  const handleTabsDragMove = (event: React.PointerEvent<HTMLDivElement>) => {
     const container = tabsRef.current;
     if (!dragState.current.isDragging || !container) return;
 
@@ -1025,10 +1025,9 @@ export function AdminPage({
     container.scrollLeft = dragState.current.startScrollLeft - delta;
   };
 
-  const resetTabsDrag = (event?: React.PointerEvent<HTMLDivElement>) => {
-    const container = tabsRef.current;
-    if (container && event && container.hasPointerCapture(event.pointerId)) {
-      container.releasePointerCapture(event.pointerId);
+  const stopTabsDrag = (event: React.PointerEvent<HTMLDivElement>) => {
+    if (event.currentTarget.hasPointerCapture(event.pointerId)) {
+      event.currentTarget.releasePointerCapture(event.pointerId);
     }
     dragState.current.isDragging = false;
   };
@@ -2274,23 +2273,9 @@ export function AdminPage({
       </div>
 
       <div className="relative">
-        <div className="mb-2 flex items-center justify-between px-1">
-          <span className="text-[10px] font-black uppercase tracking-[0.2em] text-orange-500">
-            Navegação
-          </span>
-          <span className="rounded-full border border-orange-200 bg-orange-50 px-2 py-0.5 text-[10px] font-bold text-orange-600">
-            arraste
-          </span>
-        </div>
-
         <div
           ref={tabsRef}
-          onPointerDown={handleTabsPointerDown}
-          onPointerMove={handleTabsPointerMove}
-          onPointerUp={resetTabsDrag}
-          onPointerLeave={resetTabsDrag}
-          onPointerCancel={resetTabsDrag}
-          className="flex cursor-grab touch-pan-x select-none gap-2 overflow-x-auto rounded-2xl border border-orange-100 bg-gradient-to-r from-orange-50 via-white to-amber-50 p-2 shadow-[0_10px_30px_rgba(249,115,22,0.08)] backdrop-blur-sm no-scrollbar active:cursor-grabbing"
+          className="flex gap-2 overflow-x-auto rounded-2xl border border-orange-100 bg-gradient-to-r from-orange-50 via-white to-amber-50 p-2 shadow-[0_10px_30px_rgba(249,115,22,0.08)] backdrop-blur-sm no-scrollbar"
           style={{ scrollBehavior: "smooth" }}
         >
           {tabs.map((tab) => (
@@ -2310,6 +2295,18 @@ export function AdminPage({
               {tab.label}
             </button>
           ))}
+        </div>
+
+        <div
+          onPointerDown={handleTabsDragStart}
+          onPointerMove={handleTabsDragMove}
+          onPointerUp={stopTabsDrag}
+          onPointerLeave={stopTabsDrag}
+          onPointerCancel={stopTabsDrag}
+          className="mt-3 flex justify-center"
+          aria-label="Arrastar abas"
+        >
+          <div className="h-1.5 w-16 cursor-grab rounded-full bg-gradient-to-r from-orange-300 via-orange-500 to-amber-400 shadow-[0_6px_18px_rgba(249,115,22,0.25)] active:cursor-grabbing" />
         </div>
       </div>
 
