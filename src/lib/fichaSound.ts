@@ -9,16 +9,17 @@ export function playFichaPurchaseSound() {
   const context = new AudioCtor();
   const now = context.currentTime;
 
-  const triggerTone = (
+  const tone = (
     frequency: number,
     start: number,
     duration: number,
     gainValue: number,
+    type: OscillatorType,
   ) => {
     const oscillator = context.createOscillator();
     const gain = context.createGain();
 
-    oscillator.type = "triangle";
+    oscillator.type = type;
     oscillator.frequency.setValueAtTime(frequency, start);
     gain.gain.setValueAtTime(0.0001, start);
     gain.gain.exponentialRampToValueAtTime(gainValue, start + 0.02);
@@ -30,43 +31,33 @@ export function playFichaPurchaseSound() {
     oscillator.stop(start + duration);
   };
 
-  const makeNoiseBurst = (
-    start: number,
-    duration: number,
-    gainValue: number,
-  ) => {
-    const frameCount = Math.max(1, Math.floor(context.sampleRate * duration));
-    const buffer = context.createBuffer(1, frameCount, context.sampleRate);
-    const channel = buffer.getChannelData(0);
-
-    for (let index = 0; index < frameCount; index += 1) {
-      channel[index] = (Math.random() * 2 - 1) * (1 - index / frameCount);
-    }
-
-    const source = context.createBufferSource();
-    const filter = context.createBiquadFilter();
+  const click = (start: number, frequency: number) => {
+    const oscillator = context.createOscillator();
     const gain = context.createGain();
 
-    filter.type = "highpass";
-    filter.frequency.setValueAtTime(1200, start);
+    oscillator.type = "square";
+    oscillator.frequency.setValueAtTime(frequency, start);
+    oscillator.frequency.exponentialRampToValueAtTime(
+      frequency * 0.6,
+      start + 0.08,
+    );
     gain.gain.setValueAtTime(0.0001, start);
-    gain.gain.exponentialRampToValueAtTime(gainValue, start + 0.02);
-    gain.gain.exponentialRampToValueAtTime(0.0001, start + duration);
+    gain.gain.exponentialRampToValueAtTime(0.1, start + 0.01);
+    gain.gain.exponentialRampToValueAtTime(0.0001, start + 0.12);
 
-    source.buffer = buffer;
-    source.connect(filter);
-    filter.connect(gain);
+    oscillator.connect(gain);
     gain.connect(context.destination);
-    source.start(start);
-    source.stop(start + duration);
+    oscillator.start(start);
+    oscillator.stop(start + 0.12);
   };
 
-  triggerTone(920, now, 0.18, 0.16);
-  triggerTone(760, now + 0.08, 0.18, 0.14);
-  triggerTone(620, now + 0.16, 0.2, 0.1);
-  makeNoiseBurst(now + 0.02, 0.2, 0.08);
+  tone(740, now, 0.12, 0.12, "square");
+  tone(880, now + 0.08, 0.1, 0.1, "triangle");
+  tone(1180, now + 0.16, 0.12, 0.09, "sawtooth");
+  click(now + 0.02, 120);
+  click(now + 0.12, 140);
 
   window.setTimeout(() => {
     void context.close().catch(() => {});
-  }, 400);
+  }, 260);
 }
