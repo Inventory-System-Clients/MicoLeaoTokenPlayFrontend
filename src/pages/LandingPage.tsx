@@ -38,10 +38,13 @@ export function LandingPage() {
         <div className="relative mx-auto mt-12 max-w-6xl">
           <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-start">
             <div className="lg:pt-6">
-              <div className="inline-flex items-center gap-2 rounded-full bg-brand-yellow px-4 py-2 text-xs font-black uppercase text-brand-black shadow-[0_10px_30px_rgba(244,81,30,0.18)]">
+              <Link
+                to="/promocoes"
+                className="animate-pulse-glow inline-flex items-center gap-2 rounded-full bg-brand-yellow px-4 py-2 text-xs font-black uppercase text-brand-black shadow-[0_10px_30px_rgba(244,81,30,0.18)] transition hover:-translate-y-0.5 hover:shadow-[0_14px_36px_rgba(244,81,30,0.28)]"
+              >
                 <span className="inline-flex h-2.5 w-2.5 rounded-full bg-brand-black" />
                 Pacotes com desconto e bônus
-              </div>
+              </Link>
               <h1 className="mt-6 max-w-[13ch] text-5xl font-black leading-[0.9] tracking-tight sm:text-6xl lg:text-7xl">
                 Fichas digitais para jogar hoje mesmo.
               </h1>

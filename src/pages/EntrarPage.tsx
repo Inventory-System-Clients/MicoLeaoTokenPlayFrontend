@@ -1,16 +1,19 @@
 import { useState, type FormEvent } from "react";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Link, Navigate, useNavigate, useSearchParams } from "react-router-dom";
 import { useAuthStore } from "@/store/useAuthStore";
 import { ApiError } from "@/lib/api";
 
 export function EntrarPage() {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const token = useAuthStore((state) => state.token);
   const login = useAuthStore((state) => state.login);
   const register = useAuthStore((state) => state.register);
   const loading = useAuthStore((state) => state.loading);
 
-  const [mode, setMode] = useState<"login" | "register">("login");
+  const [mode, setMode] = useState<"login" | "register">(
+    searchParams.get("mode") === "register" ? "register" : "login",
+  );
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [cpf, setCpf] = useState("");
