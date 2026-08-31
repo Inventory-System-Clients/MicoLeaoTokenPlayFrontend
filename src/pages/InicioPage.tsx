@@ -4,6 +4,8 @@ import { apiRequest } from "@/lib/api";
 import type { Store } from "@/lib/types";
 import { useAuthStore } from "@/store/useAuthStore";
 import { useSelectedStoreStore } from "@/store/useSelectedStoreStore";
+import { QrCodeScannerModal } from "@/components/qr/QrCodeScannerModal";
+import { getQrTargetPath } from "@/lib/qr";
 
 export function InicioPage() {
   const navigate = useNavigate();
@@ -12,6 +14,7 @@ export function InicioPage() {
 
   const [stores, setStores] = useState<Store[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isQrScannerOpen, setQrScannerOpen] = useState(false);
 
   useEffect(() => {
     apiRequest<Store[]>("/stores/me")
@@ -22,6 +25,15 @@ export function InicioPage() {
 
   function goToFirstStore() {
     navigate("/lojas");
+  }
+
+  function handleQrScan(value: string): boolean {
+    const targetPath = getQrTargetPath(value);
+    if (!targetPath) return false;
+
+    setQrScannerOpen(false);
+    navigate(targetPath);
+    return true;
   }
 
   return (
@@ -76,9 +88,18 @@ export function InicioPage() {
         </div>
       ) : (
         <section className="flex flex-col gap-3">
-          <div>
-            <h2 className="text-xl font-black text-brand-black">Comece por uma loja</h2>
-            <p className="text-sm font-medium text-gray-500">Escolha a unidade e veja as maquinas disponiveis.</p>
+          <div className="flex items-center justify-between gap-3">
+            <div>
+              <h2 className="text-xl font-black text-brand-black">Comece por uma loja</h2>
+              <p className="text-sm font-medium text-gray-500">Escolha a unidade e veja as maquinas disponiveis.</p>
+            </div>
+            <button
+              type="button"
+              onClick={() => setQrScannerOpen(true)}
+              className="shrink-0 rounded-full bg-brand-yellow px-4 py-2.5 text-xs font-black uppercase text-brand-black shadow-[0_10px_22px_rgba(245,158,11,0.22)] transition active:scale-[0.98]"
+            >
+              Ler QR Code
+            </button>
           </div>
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {stores.slice(0, 3).map((store) => (
@@ -103,6 +124,8 @@ export function InicioPage() {
           </div>
         </section>
       )}
+
+      <QrCodeScannerModal open={isQrScannerOpen} onClose={() => setQrScannerOpen(false)} onScan={handleQrScan} />
     </div>
   );
 }
