@@ -1011,19 +1011,28 @@ export function AdminPage({
     if (!container) return;
 
     dragState.current = {
-      isDragging: true,
+      isDragging: false,
       startX: event.clientX,
       startScrollLeft: container.scrollLeft,
     };
-
-    event.currentTarget.setPointerCapture(event.pointerId);
   };
 
   const handleTabsDragMove = (event: React.PointerEvent<HTMLDivElement>) => {
     const container = tabsRef.current;
-    if (!dragState.current.isDragging || !container) return;
+    if (!container) return;
 
     const delta = event.clientX - dragState.current.startX;
+
+    // So vira "arraste" (e so ai captura o ponteiro) depois de um deslocamento
+    // minimo. Sem isso, qualquer clique era tratado como drag e o pointerup
+    // era redirecionado pro container em vez do botao da aba, cancelando o
+    // clique.
+    if (!dragState.current.isDragging) {
+      if (Math.abs(delta) < 6) return;
+      dragState.current.isDragging = true;
+      event.currentTarget.setPointerCapture(event.pointerId);
+    }
+
     container.scrollLeft = dragState.current.startScrollLeft - delta;
   };
 
