@@ -107,6 +107,7 @@ type CampaignForm = {
   endsAt: string;
   notes: string;
   packageId: string;
+  packageName: string;
   packageAmountBrl: string;
   packageBaseCredits: string;
   packageBonusCredits: string;
@@ -114,6 +115,8 @@ type CampaignForm = {
   machineCostPerGame: string;
   machinePulsesPerCredit: string;
 };
+
+const NEW_CAMPAIGN_PACKAGE_ID = "__new__";
 
 const inputClass =
   "rounded-xl border border-gray-200 bg-white px-3 py-2.5 text-sm text-brand-black outline-none transition-colors focus:border-brand-yellow focus:ring-2 focus:ring-brand-yellow/20";
@@ -666,6 +669,7 @@ export function AdminPage({
     endsAt: "",
     notes: "",
     packageId: "",
+    packageName: "",
     packageAmountBrl: "",
     packageBaseCredits: "",
     packageBonusCredits: "0",
@@ -1594,6 +1598,37 @@ export function AdminPage({
     setSaving(true);
     setError(null);
     try {
+      const wantsNewPackage = campaignForm.packageId === NEW_CAMPAIGN_PACKAGE_ID;
+      if (
+        wantsNewPackage &&
+        (!campaignForm.packageName || !campaignForm.packageAmountBrl || !campaignForm.packageBaseCredits)
+      ) {
+        setError("Preencha nome, valor e fichas do novo pacote da campanha.");
+        setSaving(false);
+        return;
+      }
+
+      // Pacote exclusivo de campanha: nasce escondido (active:false) e so
+      // aparece na loja enquanto o override abaixo estiver ativo dentro da
+      // janela da campanha - ver applyActivePackageOverrides no backend.
+      const exclusivePackageId = wantsNewPackage
+        ? (
+            await apiRequest<{ id: string }>("/admin/packages", {
+              method: "POST",
+              body: {
+                name: campaignForm.packageName,
+                amountBrl: toNumber(campaignForm.packageAmountBrl),
+                baseCredits: toNumber(campaignForm.packageBaseCredits),
+                bonusCredits: toNumber(campaignForm.packageBonusCredits || "0"),
+                pointsAwarded: 0,
+                isPopular: false,
+                showOnHome: false,
+                active: false,
+              },
+            })
+          ).id
+        : campaignForm.packageId;
+
       await apiRequest<Campaign>("/admin/campaigns", {
         method: "POST",
         body: {
@@ -1603,12 +1638,12 @@ export function AdminPage({
           notes: campaignForm.notes || undefined,
           active: true,
           packageOverrides:
-            campaignForm.packageId &&
+            exclusivePackageId &&
             campaignForm.packageAmountBrl &&
             campaignForm.packageBaseCredits
               ? [
                   {
-                    packageId: campaignForm.packageId,
+                    packageId: exclusivePackageId,
                     amountBrl: toNumber(campaignForm.packageAmountBrl),
                     baseCredits: toNumber(campaignForm.packageBaseCredits),
                     bonusCredits: toNumber(
@@ -1641,6 +1676,7 @@ export function AdminPage({
         endsAt: "",
         notes: "",
         packageId: "",
+        packageName: "",
         packageAmountBrl: "",
         packageBaseCredits: "",
         packageBonusCredits: "0",
@@ -3009,12 +3045,26 @@ export function AdminPage({
                   }
                 >
                   <option value="">Sem pacote promocional</option>
+                  <option value={NEW_CAMPAIGN_PACKAGE_ID}>+ Criar novo pacote</option>
                   {packages.map((creditPackage) => (
                     <option key={creditPackage.id} value={creditPackage.id}>
                       {creditPackage.name}
                     </option>
                   ))}
                 </select>
+                {campaignForm.packageId === NEW_CAMPAIGN_PACKAGE_ID && (
+                  <input
+                    className={inputClass}
+                    placeholder="Nome do pacote"
+                    value={campaignForm.packageName}
+                    onChange={(event) =>
+                      setCampaignForm({
+                        ...campaignForm,
+                        packageName: event.target.value,
+                      })
+                    }
+                  />
+                )}
                 <input
                   className={inputClass}
                   inputMode="decimal"
