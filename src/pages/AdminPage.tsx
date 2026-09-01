@@ -543,6 +543,7 @@ export function AdminPage({
   const [activeTab, setActiveTab] = useState<AdminTab>(initialTab);
   const tabsRef = useRef<HTMLDivElement | null>(null);
   const dragState = useRef({
+    isPointerDown: false,
     isDragging: false,
     startX: 0,
     startScrollLeft: 0,
@@ -1011,6 +1012,7 @@ export function AdminPage({
     if (!container) return;
 
     dragState.current = {
+      isPointerDown: true,
       isDragging: false,
       startX: event.clientX,
       startScrollLeft: container.scrollLeft,
@@ -1019,7 +1021,9 @@ export function AdminPage({
 
   const handleTabsDragMove = (event: React.PointerEvent<HTMLDivElement>) => {
     const container = tabsRef.current;
-    if (!container) return;
+    // pointermove dispara em qualquer hover, com ou sem botao pressionado -
+    // sem esse guard, so passar o mouse por cima ja mexia no scroll.
+    if (!dragState.current.isPointerDown || !container) return;
 
     const delta = event.clientX - dragState.current.startX;
 
@@ -1040,6 +1044,7 @@ export function AdminPage({
     if (event.currentTarget.hasPointerCapture(event.pointerId)) {
       event.currentTarget.releasePointerCapture(event.pointerId);
     }
+    dragState.current.isPointerDown = false;
     dragState.current.isDragging = false;
   };
 
