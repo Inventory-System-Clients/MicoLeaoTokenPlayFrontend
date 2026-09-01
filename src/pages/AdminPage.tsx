@@ -1005,6 +1005,8 @@ export function AdminPage({
   );
 
   const handleTabsDragStart = (event: React.PointerEvent<HTMLDivElement>) => {
+    if (event.pointerType === "touch") return;
+
     const container = tabsRef.current;
     if (!container) return;
 
@@ -2275,7 +2277,12 @@ export function AdminPage({
       <div className="relative">
         <div
           ref={tabsRef}
-          className="flex gap-2 overflow-x-auto rounded-2xl border border-orange-100 bg-gradient-to-r from-orange-50 via-white to-amber-50 p-2 shadow-[0_10px_30px_rgba(249,115,22,0.08)] backdrop-blur-sm no-scrollbar"
+          onPointerDown={handleTabsDragStart}
+          onPointerMove={handleTabsDragMove}
+          onPointerUp={stopTabsDrag}
+          onPointerLeave={stopTabsDrag}
+          onPointerCancel={stopTabsDrag}
+          className="tabs-scrollbar flex cursor-grab gap-2 overflow-x-auto rounded-2xl border border-orange-100 bg-gradient-to-r from-orange-50 via-white to-amber-50 p-2 shadow-[0_10px_30px_rgba(249,115,22,0.08)] backdrop-blur-sm active:cursor-grabbing"
           style={{ scrollBehavior: "smooth" }}
         >
           {tabs.map((tab) => (
@@ -2295,18 +2302,6 @@ export function AdminPage({
               {tab.label}
             </button>
           ))}
-        </div>
-
-        <div
-          onPointerDown={handleTabsDragStart}
-          onPointerMove={handleTabsDragMove}
-          onPointerUp={stopTabsDrag}
-          onPointerLeave={stopTabsDrag}
-          onPointerCancel={stopTabsDrag}
-          className="mt-3 flex justify-center"
-          aria-label="Arrastar abas"
-        >
-          <div className="h-1.5 w-16 cursor-grab rounded-full bg-gradient-to-r from-orange-300 via-orange-500 to-amber-400 shadow-[0_6px_18px_rgba(249,115,22,0.25)] active:cursor-grabbing" />
         </div>
       </div>
 

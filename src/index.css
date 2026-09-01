@@ -43,6 +43,21 @@ body {
   scrollbar-width: none;
 }
 
+.tabs-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(249, 115, 22, 0.35) transparent;
+}
+.tabs-scrollbar::-webkit-scrollbar {
+  height: 6px;
+}
+.tabs-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.tabs-scrollbar::-webkit-scrollbar-thumb {
+  background-color: rgba(249, 115, 22, 0.35);
+  border-radius: 9999px;
+}
+
 .home-hero::before {
   content: "";
   position: absolute;
