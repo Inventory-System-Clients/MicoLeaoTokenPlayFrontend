@@ -2416,6 +2416,7 @@ export function AdminPage({
             title="Criar usuário"
             onSubmit={submitUser}
             className="sm:col-span-2 xl:col-span-3"
+            collapsible
           >
             <div className="grid gap-2 sm:grid-cols-2 xl:grid-cols-4">
               <input
@@ -2948,7 +2949,7 @@ export function AdminPage({
 
       {!loading && activeTab === "campaigns" && (
         <section className="flex flex-col gap-4">
-          <AdminFormSection title="Criar campanha" onSubmit={submitCampaign}>
+          <AdminFormSection title="Criar campanha" onSubmit={submitCampaign} collapsible>
             <input
               className={inputClass}
               required
@@ -3379,6 +3380,7 @@ export function AdminPage({
           <AdminFormSection
             title="Criar pacote de fichas"
             onSubmit={submitPackage}
+            collapsible
           >
             <input
               className={inputClass}
@@ -3647,6 +3649,7 @@ export function AdminPage({
           <AdminFormSection
             title="Criar nível de fidelidade"
             onSubmit={submitLevel}
+            collapsible
           >
             <input
               className={inputClass}
@@ -3834,7 +3837,7 @@ export function AdminPage({
 
       {!loading && activeTab === "stores" && (
         <section className="flex flex-col gap-4">
-          <AdminFormSection title="Criar loja" onSubmit={submitStore}>
+          <AdminFormSection title="Criar loja" onSubmit={submitStore} collapsible>
             <input
               className={inputClass}
               required
@@ -3922,7 +3925,7 @@ export function AdminPage({
 
       {!loading && activeTab === "machines" && (
         <section className="flex flex-col gap-4">
-          <AdminFormSection title="Criar máquina" onSubmit={submitMachine}>
+          <AdminFormSection title="Criar máquina" onSubmit={submitMachine} collapsible>
             <select
               className={inputClass}
               required
@@ -4133,7 +4136,7 @@ export function AdminPage({
 
       {!loading && activeTab === "products" && (
         <section className="flex flex-col gap-4">
-          <AdminFormSection title="Cadastrar produto" onSubmit={submitProduct}>
+          <AdminFormSection title="Cadastrar produto" onSubmit={submitProduct} collapsible>
             <input
               className={inputClass}
               required
