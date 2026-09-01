@@ -72,6 +72,13 @@ const config: Config = {
           "0%": { transform: "translateY(-16px) rotate(0deg)", opacity: "1" },
           "100%": { transform: "translateY(160px) rotate(300deg)", opacity: "0" },
         },
+        // Garra descendo ate a pelucia, "pinçando" (leve squeeze) e subindo de volta.
+        "claw-drop": {
+          "0%, 100%": { transform: "translateY(-14px)" },
+          "35%": { transform: "translateY(34px)" },
+          "50%": { transform: "translateY(34px) scale(0.88)" },
+          "65%": { transform: "translateY(34px) scale(1)" },
+        },
       },
       animation: {
         "spin-slow": "spin-slow 1.6s linear infinite",
@@ -80,6 +87,7 @@ const config: Config = {
         "flash-yellow": "flash-yellow 1s ease-in-out 1",
         "pulse-glow": "pulse-glow 1.8s ease-in-out infinite",
         "confetti-fall": "confetti-fall 900ms ease-out forwards",
+        "claw-drop": "claw-drop 2.2s cubic-bezier(0.45, 0, 0.55, 1) infinite",
       },
     },
   },
