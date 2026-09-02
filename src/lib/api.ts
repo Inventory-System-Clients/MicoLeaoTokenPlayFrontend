@@ -13,6 +13,25 @@ export function setToken(token: string | null): void {
   }
 }
 
+/**
+ * Le o "role" direto do payload do JWT ja salvo, so pra decidir o que
+ * mostrar na UI (ex. secao de 2FA so pra admin). O payload de um JWT nao e
+ * secreto e nao e a fonte de autorizacao - o backend confere de verdade em
+ * toda rota /admin/*; isso aqui e so pra nao mostrar controle irrelevante
+ * pra quem nao e admin.
+ */
+export function getUserRole(): "CUSTOMER" | "ADMIN" | null {
+  const token = getToken();
+  if (!token) return null;
+  try {
+    const payload = token.split(".")[1];
+    const decoded = JSON.parse(atob(payload.replace(/-/g, "+").replace(/_/g, "/")));
+    return decoded.role ?? null;
+  } catch {
+    return null;
+  }
+}
+
 export class ApiError extends Error {
   constructor(
     public status: number,

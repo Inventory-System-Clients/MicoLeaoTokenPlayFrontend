@@ -2,8 +2,9 @@ import { useEffect, useState, type FormEvent } from "react";
 import { apiRequest, ApiError } from "@/lib/api";
 import type { UserProfile } from "@/lib/types";
 import { useAuthStore } from "@/store/useAuthStore";
+import { TwoFactorSection } from "@/components/security/TwoFactorSection";
 
-type ProfileForm = Omit<UserProfile, "id">;
+type ProfileForm = Omit<UserProfile, "id" | "role" | "twoFactorEnabled">;
 
 const emptyForm: ProfileForm = {
   name: "",
@@ -37,6 +38,7 @@ function toForm(profile: UserProfile): ProfileForm {
 
 export function MeuCadastroPage() {
   const [form, setForm] = useState<ProfileForm>(emptyForm);
+  const [profile, setProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [feedback, setFeedback] = useState<string | null>(null);
@@ -45,7 +47,10 @@ export function MeuCadastroPage() {
 
   useEffect(() => {
     apiRequest<UserProfile>("/users/me/profile")
-      .then((profile) => setForm(toForm(profile)))
+      .then((data) => {
+        setForm(toForm(data));
+        setProfile(data);
+      })
       .catch(() => setError("Nao foi possivel carregar seu cadastro."))
       .finally(() => setLoading(false));
   }, []);
@@ -61,11 +66,12 @@ export function MeuCadastroPage() {
     setSaving(true);
 
     try {
-      const profile = await apiRequest<UserProfile>("/users/me/profile", {
+      const data = await apiRequest<UserProfile>("/users/me/profile", {
         method: "PUT",
         body: form,
       });
-      setForm(toForm(profile));
+      setForm(toForm(data));
+      setProfile(data);
       await fetchNavbarSummary();
       setFeedback("Cadastro atualizado com sucesso.");
     } catch (err) {
@@ -140,6 +146,13 @@ export function MeuCadastroPage() {
             {saving ? "Salvando..." : "Salvar cadastro"}
           </button>
         </form>
+      )}
+
+      {!loading && profile?.role === "ADMIN" && (
+        <TwoFactorSection
+          enabled={profile.twoFactorEnabled}
+          onChange={(enabled) => setProfile((current) => (current ? { ...current, twoFactorEnabled: enabled } : current))}
+        />
       )}
     </div>
   );

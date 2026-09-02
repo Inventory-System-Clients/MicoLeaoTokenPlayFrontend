@@ -1848,7 +1848,7 @@ export function AdminPage({
 
   async function updateUser(
     user: AdminUser,
-    input: Partial<Pick<AdminUser, "status" | "role">>,
+    input: Partial<Pick<AdminUser, "status" | "role">> | { twoFactorEnabled: false },
   ) {
     setSaving(true);
     setError(null);
@@ -2602,6 +2602,9 @@ export function AdminPage({
                   {user.protected && (
                     <AdminTag tone="amber">ADMIN MAXIMO</AdminTag>
                   )}
+                  {user.twoFactorEnabled && (
+                    <AdminTag tone="black">2FA ATIVO</AdminTag>
+                  )}
                 </div>
               </div>
 
@@ -2728,6 +2731,24 @@ export function AdminPage({
                   Salvar cadastro
                 </AdminButton>
               </form>
+              {user.twoFactorEnabled && (
+                <AdminButton
+                  variant="secondary"
+                  disabled={saving}
+                  className="mt-3 w-full"
+                  onClick={() => {
+                    if (
+                      window.confirm(
+                        `Desativar o 2FA de "${user.name}"? Use isso se a pessoa perdeu o acesso ao aplicativo autenticador.`,
+                      )
+                    ) {
+                      updateUser(user, { twoFactorEnabled: false });
+                    }
+                  }}
+                >
+                  Desativar 2FA
+                </AdminButton>
+              )}
               <AdminButton
                 variant="danger"
                 disabled={saving || user.protected}

@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { apiRequest, getToken, setToken } from "@/lib/api";
-import type { AuthResponse, UserNavbarSummary } from "@/lib/types";
+import type { AuthResponse, LoginResponse, UserNavbarSummary } from "@/lib/types";
 
 type AuthState = {
   token: string | null;
@@ -9,7 +9,9 @@ type AuthState = {
   loading: boolean;
   /** Incrementa a cada vez que o saldo sobe - usado como "key" para replayar a celebracao do navbar. */
   balanceBump: number;
-  login: (email: string, password: string) => Promise<void>;
+  /** Retorna { twoFactorRequired: true, pendingToken } quando a conta tem 2FA - so completa a sessao apos verifyTwoFactor. */
+  login: (email: string, password: string) => Promise<LoginResponse>;
+  verifyTwoFactor: (pendingToken: string, code: string) => Promise<void>;
   register: (input: {
     name: string;
     email: string;
@@ -35,9 +37,30 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   login: async (email, password) => {
     set({ loading: true });
     try {
-      const data = await apiRequest<AuthResponse>("/auth/login", {
+      const data = await apiRequest<LoginResponse>("/auth/login", {
         method: "POST",
         body: { email, password },
+        auth: false,
+      });
+      if ("twoFactorRequired" in data) {
+        return data;
+      }
+      setToken(data.token);
+      set({ token: data.token });
+      await get().fetchPrivacyStatus();
+      await get().fetchNavbarSummary();
+      return data;
+    } finally {
+      set({ loading: false });
+    }
+  },
+
+  verifyTwoFactor: async (pendingToken, code) => {
+    set({ loading: true });
+    try {
+      const data = await apiRequest<AuthResponse>("/auth/login/2fa", {
+        method: "POST",
+        body: { pendingToken, code },
         auth: false,
       });
       setToken(data.token);

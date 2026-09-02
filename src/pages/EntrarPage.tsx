@@ -8,6 +8,7 @@ export function EntrarPage() {
   const [searchParams] = useSearchParams();
   const token = useAuthStore((state) => state.token);
   const login = useAuthStore((state) => state.login);
+  const verifyTwoFactor = useAuthStore((state) => state.verifyTwoFactor);
   const register = useAuthStore((state) => state.register);
   const loading = useAuthStore((state) => state.loading);
 
@@ -21,6 +22,8 @@ export function EntrarPage() {
   const [password, setPassword] = useState("");
   const [privacyAccepted, setPrivacyAccepted] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [pendingToken, setPendingToken] = useState<string | null>(null);
+  const [twoFactorCode, setTwoFactorCode] = useState("");
 
   const isRegisterMode = mode === "register";
 
@@ -46,8 +49,14 @@ export function EntrarPage() {
           privacyAccepted: true,
           privacyVersion: "2026-07-17",
         });
-      } else {
-        await login(email, password);
+        navigate("/inicio");
+        return;
+      }
+
+      const result = await login(email, password);
+      if ("twoFactorRequired" in result) {
+        setPendingToken(result.pendingToken);
+        return;
       }
       navigate("/inicio");
     } catch (err) {
@@ -59,6 +68,74 @@ export function EntrarPage() {
             : "Não foi possível entrar",
       );
     }
+  }
+
+  async function handleTwoFactorSubmit(event: FormEvent) {
+    event.preventDefault();
+    setError(null);
+    if (!pendingToken) return;
+    try {
+      await verifyTwoFactor(pendingToken, twoFactorCode);
+      navigate("/inicio");
+    } catch (err) {
+      setError(err instanceof ApiError ? err.message : "Código inválido");
+    }
+  }
+
+  if (pendingToken) {
+    return (
+      <div className="auth-viewport flex min-h-dvh items-center justify-center bg-[#060814] px-5 py-10 text-white">
+        <div className="w-full max-w-sm rounded-3xl bg-white p-6 text-brand-black shadow-2xl">
+          <div className="mb-5 flex items-center gap-3">
+            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-brand-yellow to-orange-400 text-2xl shadow-[0_10px_24px_rgba(245,158,11,0.3)]">
+              🛡️
+            </div>
+            <div>
+              <p className="text-lg font-black leading-tight">Verificação em duas etapas</p>
+              <p className="text-xs font-bold uppercase tracking-wide text-gray-400">Mico Leão</p>
+            </div>
+          </div>
+          <form onSubmit={handleTwoFactorSubmit} className="flex flex-col gap-3">
+            <p className="text-sm font-semibold text-gray-500">
+              Digite o código de 6 dígitos do seu aplicativo autenticador.
+            </p>
+            <input
+              type="text"
+              inputMode="numeric"
+              autoComplete="one-time-code"
+              required
+              minLength={6}
+              maxLength={6}
+              value={twoFactorCode}
+              onChange={(event) => setTwoFactorCode(event.target.value.replace(/\D/g, ""))}
+              placeholder="000000"
+              className="h-14 w-full rounded-2xl border border-amber-100 bg-amber-50/60 px-4 text-center text-2xl font-black tracking-[0.3em] text-brand-black outline-none focus:border-brand-yellow focus:bg-white focus:ring-2 focus:ring-brand-yellow/25"
+            />
+            {error && (
+              <p className="rounded-2xl bg-red-50 px-4 py-3 text-sm font-bold text-red-600">{error}</p>
+            )}
+            <button
+              type="submit"
+              disabled={loading}
+              className="mt-2 rounded-2xl bg-gradient-to-r from-brand-yellow to-orange-400 py-4 text-base font-black text-brand-black shadow-[0_16px_28px_rgba(245,158,11,0.28)] transition active:scale-[0.98] disabled:opacity-60"
+            >
+              {loading ? "Verificando..." : "Confirmar"}
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setPendingToken(null);
+                setTwoFactorCode("");
+                setError(null);
+              }}
+              className="text-center text-sm font-black text-orange-700"
+            >
+              Voltar para o login
+            </button>
+          </form>
+        </div>
+      </div>
+    );
   }
 
   return (

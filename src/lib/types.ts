@@ -13,6 +13,8 @@ export type UserProfile = {
   email: string;
   cpf: string;
   phone: string | null;
+  role: "CUSTOMER" | "ADMIN";
+  twoFactorEnabled: boolean;
   addressZipCode: string | null;
   addressStreet: string | null;
   addressNumber: string | null;
@@ -63,6 +65,16 @@ export type CreditPackage = {
 export type AuthResponse = {
   token: string;
   user: { id: string; name: string; email: string };
+};
+
+export type LoginResponse =
+  | AuthResponse
+  | { twoFactorRequired: true; pendingToken: string };
+
+export type TwoFactorSetup = {
+  secret: string;
+  otpauthUrl: string;
+  qrCodeBase64: string;
 };
 
 export type Transaction = {
