@@ -140,11 +140,23 @@ export type AdminUser = {
   phone: string | null;
   status: "ACTIVE" | "BLOCKED";
   role: "CUSTOMER" | "ADMIN";
+  twoFactorEnabled: boolean;
   creditBalance: number;
   totalCreditsPurchased: number;
   pointsBalance: number;
   createdAt: string;
   protected?: boolean;
+};
+
+export type AuditLog = {
+  id: string;
+  actorId: string | null;
+  action: string;
+  entityType: string;
+  entityId: string | null;
+  metadata: Record<string, unknown> | null;
+  createdAt: string;
+  actor: { id: string; name: string; email: string } | null;
 };
 
 export type LoyaltyLevel = {

@@ -20,6 +20,7 @@ import type {
   CreditPackage,
   AdminProductOrder,
   AdminPrivacyRequest,
+  AuditLog,
   LoyaltyDistribution,
   LoyaltyLevel,
   Product,
@@ -47,7 +48,8 @@ type AdminTab =
   | "orders"
   | "finance"
   | "privacy"
-  | "reports";
+  | "reports"
+  | "audit";
 
 type PackageForm = {
   name: string;
@@ -153,7 +155,7 @@ const privacyRequestStatusLabel: Record<AdminPrivacyRequest["status"], string> =
     REJECTED: "Recusado",
   };
 
-type FilterableTab = Exclude<AdminTab, "summary" | "finance" | "reports">;
+type FilterableTab = Exclude<AdminTab, "summary" | "finance" | "reports" | "audit">;
 
 type AdminFilter = {
   search: string;
@@ -222,6 +224,7 @@ const tabs: Array<{ id: AdminTab; label: string; icon: string }> = [
   { id: "finance", label: "Financeiro", icon: "🏦" },
   { id: "privacy", label: "LGPD", icon: "LG" },
   { id: "reports", label: "Relatorios", icon: "📈" },
+  { id: "audit", label: "Auditoria", icon: "🛡️" },
 ];
 
 function toNumber(value: string): number {
@@ -558,6 +561,7 @@ export function AdminPage({
   const [users, setUsers] = useState<AdminUser[]>([]);
   const [transactions, setTransactions] = useState<AdminTransaction[]>([]);
   const [gameplayLogs, setGameplayLogs] = useState<AdminGameplayLog[]>([]);
+  const [auditLogs, setAuditLogs] = useState<AuditLog[]>([]);
   const [campaigns, setCampaigns] = useState<Campaign[]>([]);
   const [packages, setPackages] = useState<CreditPackage[]>([]);
   const [levels, setLevels] = useState<LoyaltyLevel[]>([]);
@@ -1067,6 +1071,7 @@ export function AdminPage({
         productsData,
         ordersData,
         privacyRequestsData,
+        auditLogsData,
       ] = await Promise.all([
         apiRequest<AdminUser[]>("/admin/users"),
         apiRequest<AdminTransaction[]>("/admin/transactions"),
@@ -1085,6 +1090,10 @@ export function AdminPage({
             throw err;
           },
         ),
+        apiRequest<AuditLog[]>("/admin/audit-logs").catch((err) => {
+          if (err instanceof ApiError && err.status === 404) return [];
+          throw err;
+        }),
       ]);
       const [summaryData, distributionData, settingsData] = await Promise.all([
         apiRequest<AdminDashboardSummary>("/admin/dashboard/summary"),
@@ -1116,6 +1125,7 @@ export function AdminPage({
       setProducts(productsData);
       setOrders(ordersData);
       setPrivacyRequests(privacyRequestsData);
+      setAuditLogs(auditLogsData);
 
       if (storesData[0]) {
         setMachineForm((current) => ({
@@ -2718,6 +2728,19 @@ export function AdminPage({
                   Salvar cadastro
                 </AdminButton>
               </form>
+              <AdminButton
+                variant="danger"
+                disabled={saving || user.protected}
+                className="mt-3 w-full"
+                onClick={() =>
+                  deleteAdminResource(
+                    `/admin/users/${user.id}`,
+                    `Excluir "${user.name}"? Nome, e-mail, CPF, telefone e endereco sao apagados/anonimizados. Compras e jogadas anteriores sao mantidas (obrigacao fiscal), mas deixam de ficar ligadas a uma pessoa identificavel.`,
+                  )
+                }
+              >
+                Excluir (LGPD)
+              </AdminButton>
             </AdminCard>
           ))}
         </section>
@@ -5410,6 +5433,57 @@ export function AdminPage({
           )}
         </section>
       )}
+
+      {!loading && activeTab === "audit" && (
+        <section className="flex flex-col gap-4">
+          <AdminCard className="border-amber-100 bg-white/90">
+            <p className="text-xs font-black uppercase text-orange-600">Seguranca</p>
+            <h2 className="text-2xl font-black text-brand-black">Log de auditoria</h2>
+            <p className="mt-1 text-sm font-medium text-gray-500">
+              Quem criou, alterou, excluiu ou anonimizou dado de usuario e quem respondeu solicitacoes LGPD.
+            </p>
+          </AdminCard>
+
+          {auditLogs.length === 0 && (
+            <AdminEmptyState icon="🛡️" message="Nenhum evento registrado ainda." />
+          )}
+
+          <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+            {auditLogs.map((log) => (
+              <AdminCard key={log.id}>
+                <div className="flex items-start justify-between gap-3">
+                  <div className="min-w-0">
+                    <p className="truncate font-bold text-brand-black">{auditActionLabel(log.action)}</p>
+                    <p className="truncate text-sm text-gray-500">
+                      {log.entityType}
+                      {log.entityId ? ` · ${log.entityId.slice(0, 8)}…` : ""}
+                    </p>
+                    <p className="mt-1 text-sm text-gray-500">
+                      {log.actor ? `${log.actor.name} (${log.actor.email})` : "Sistema"}
+                    </p>
+                  </div>
+                  <p className="shrink-0 text-xs text-gray-400">{formatDate(log.createdAt)}</p>
+                </div>
+              </AdminCard>
+            ))}
+          </div>
+        </section>
+      )}
     </div>
   );
+}
+
+function auditActionLabel(action: string): string {
+  const labels: Record<string, string> = {
+    "user.create": "Usuario criado",
+    "user.update": "Usuario editado",
+    "user.update.password_reset_by_admin": "Senha redefinida pelo admin",
+    "user.anonymize": "Usuario excluido (anonimizado)",
+    "user.2fa_disabled_by_admin": "2FA desativado pelo admin",
+    "privacy_request.update": "Solicitacao LGPD respondida",
+    "auth.password_reset_completed": "Redefinicao de senha concluida",
+    "auth.2fa_enabled": "2FA ativado",
+    "auth.2fa_disabled": "2FA desativado pelo usuario",
+  };
+  return labels[action] ?? action;
 }
