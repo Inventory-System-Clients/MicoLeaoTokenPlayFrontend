@@ -209,6 +209,12 @@ export function EntrarPage() {
               />
             </LoginField>
 
+            {!isRegisterMode && (
+              <Link to="/esqueci-senha" className="-mt-1 text-right text-xs font-black text-orange-700">
+                Esqueci minha senha
+              </Link>
+            )}
+
             {error && (
               <p className="rounded-2xl bg-red-50 px-4 py-3 text-sm font-bold text-red-600">
                 {error}

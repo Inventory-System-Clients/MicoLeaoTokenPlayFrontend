@@ -1,6 +1,8 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import { RequireAuth } from "@/components/layout/RequireAuth";
 import { EntrarPage } from "@/pages/EntrarPage";
+import { EsqueciSenhaPage } from "@/pages/EsqueciSenhaPage";
+import { RedefinirSenhaPage } from "@/pages/RedefinirSenhaPage";
 import { LandingPage } from "@/pages/LandingPage";
 import { PromocoesPage } from "@/pages/PromocoesPage";
 import { InicioPage } from "@/pages/InicioPage";
@@ -25,6 +27,8 @@ function App() {
     <Routes>
       <Route path="/" element={<LandingPage />} />
       <Route path="/entrar" element={<EntrarPage />} />
+      <Route path="/esqueci-senha" element={<EsqueciSenhaPage />} />
+      <Route path="/redefinir-senha" element={<RedefinirSenhaPage />} />
       <Route path="/promocoes" element={<PromocoesPage />} />
       <Route path="/privacidade" element={<PrivacidadePage />} />
       <Route path="/termos" element={<TermosPage />} />
