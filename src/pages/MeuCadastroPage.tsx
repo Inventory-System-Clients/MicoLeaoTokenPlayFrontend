@@ -174,7 +174,7 @@ function TextField({
   maxLength?: number;
 }) {
   return (
-    <label className="grid gap-1">
+    <label className="grid min-w-0 gap-1">
       <span className="text-xs font-black uppercase text-gray-500">{label}</span>
       <input
         type={type}
@@ -182,7 +182,7 @@ function TextField({
         maxLength={maxLength}
         value={value}
         onChange={(event) => onChange(event.target.value)}
-        className="h-12 rounded-2xl border border-amber-100 bg-amber-50/60 px-4 text-base font-bold text-brand-black outline-none focus:border-brand-yellow focus:ring-2 focus:ring-brand-yellow/25"
+        className="h-12 w-full min-w-0 rounded-2xl border border-amber-100 bg-amber-50/60 px-4 text-base font-bold text-brand-black outline-none focus:border-brand-yellow focus:ring-2 focus:ring-brand-yellow/25"
       />
     </label>
   );
