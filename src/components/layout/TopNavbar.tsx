@@ -23,7 +23,7 @@ export function TopNavbar({ wide = false }: { wide?: boolean }) {
     <>
       <header className="sticky top-0 z-50 border-b border-slate-800 bg-slate-950/95 shadow-lg backdrop-blur">
         <div
-          className={`mx-auto flex w-full items-center justify-between py-3 ${
+          className={`mx-auto flex w-full items-center justify-between py-3.5 ${
             wide ? "max-w-6xl px-4 sm:px-8" : "max-w-xl px-4 sm:max-w-2xl sm:px-6 lg:max-w-5xl lg:px-8"
           }`}
         >
@@ -32,13 +32,13 @@ export function TopNavbar({ wide = false }: { wide?: boolean }) {
               type="button"
               aria-label="Abrir menu"
               onClick={() => setDrawerOpen(true)}
-              className="flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-2xl leading-none text-white transition-transform duration-150 hover:bg-white/15 active:scale-90"
+              className="flex h-12 w-12 items-center justify-center rounded-full bg-white/10 text-[26px] leading-none text-white transition-transform duration-150 hover:bg-white/15 active:scale-90"
             >
               ☰
             </button>
             <Link
               to="/meu-cadastro"
-              className="inline-flex h-11 items-center rounded-full bg-white/10 px-4 text-xs font-black text-white ring-1 ring-white/15 transition hover:bg-white/15 active:scale-95"
+              className="inline-flex h-12 items-center rounded-full bg-white/10 px-4 text-sm font-black text-white ring-1 ring-white/15 transition hover:bg-white/15 active:scale-95"
             >
               <span className="sm:hidden">ID</span>
               <span className="hidden sm:inline">Meu cadastro</span>
@@ -49,12 +49,12 @@ export function TopNavbar({ wide = false }: { wide?: boolean }) {
             <span className="w-full truncate text-sm font-medium text-white/80">{name}</span>
             <span
               key={balanceBump}
-              className="animate-flash-yellow rounded-full px-2 text-xl font-bold leading-tight text-brand-yellow"
+              className="animate-flash-yellow rounded-full px-2 text-2xl font-bold leading-tight text-brand-yellow"
             >
               {creditBalance} Fichas
             </span>
             <span className="truncate text-xs italic text-white/55">Nível {levelName}</span>
-            <span className="mt-0.5 inline-flex items-center gap-1 rounded-full bg-white/10 px-2 py-0.5 text-xs font-bold text-white/85">
+            <span className="mt-0.5 inline-flex items-center gap-1 rounded-full bg-white/10 px-2.5 py-1 text-xs font-bold text-white/85">
               ★ {pointsBalance} pts
             </span>
           </div>
