@@ -136,7 +136,7 @@ export function SidebarDrawer({ open, onClose }: SidebarDrawerProps) {
               type="button"
               aria-label="Fechar menu"
               onClick={onClose}
-              className="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-xl leading-none text-white transition-colors hover:bg-white/15"
+              className="flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-xl leading-none text-white transition-colors hover:bg-white/15"
             >
               ×
             </button>

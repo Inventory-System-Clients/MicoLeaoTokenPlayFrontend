@@ -32,13 +32,13 @@ export function TopNavbar({ wide = false }: { wide?: boolean }) {
               type="button"
               aria-label="Abrir menu"
               onClick={() => setDrawerOpen(true)}
-              className="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-2xl leading-none text-white transition-transform duration-150 hover:bg-white/15 active:scale-90"
+              className="flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-2xl leading-none text-white transition-transform duration-150 hover:bg-white/15 active:scale-90"
             >
               ☰
             </button>
             <Link
               to="/meu-cadastro"
-              className="inline-flex rounded-full bg-white/10 px-3 py-2 text-xs font-black text-white ring-1 ring-white/15 transition hover:bg-white/15"
+              className="inline-flex h-11 items-center rounded-full bg-white/10 px-4 text-xs font-black text-white ring-1 ring-white/15 transition hover:bg-white/15 active:scale-95"
             >
               <span className="sm:hidden">ID</span>
               <span className="hidden sm:inline">Meu cadastro</span>
