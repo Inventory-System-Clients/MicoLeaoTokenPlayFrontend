@@ -102,7 +102,7 @@ export function QrCodeScannerModal({ open, onClose, onScan }: QrCodeScannerModal
             value={manualCode}
             onChange={(event) => setManualCode(event.target.value)}
             placeholder="Ou cole o link/codigo do QR"
-            className="h-11 rounded-2xl border border-amber-100 bg-amber-50/60 px-4 text-sm font-bold text-brand-black outline-none focus:border-brand-yellow focus:ring-2 focus:ring-brand-yellow/25"
+            className="h-11 rounded-2xl border border-amber-100 bg-amber-50/60 px-4 text-base font-bold text-brand-black outline-none focus:border-brand-yellow focus:ring-2 focus:ring-brand-yellow/25"
           />
           <button
             type="button"

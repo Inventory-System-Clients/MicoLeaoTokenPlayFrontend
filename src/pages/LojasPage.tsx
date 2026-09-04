@@ -90,7 +90,7 @@ export function LojasPage() {
         value={search}
         onChange={(event) => setSearch(event.target.value)}
         placeholder="Buscar loja ou shopping..."
-        className="rounded-xl border border-gray-200 bg-surface-soft px-4 py-3 text-sm outline-none focus:border-brand-yellow"
+        className="rounded-xl border border-gray-200 bg-surface-soft px-4 py-3 text-base outline-none focus:border-brand-yellow"
       />
 
       {loading && <p className="py-8 text-center text-sm text-gray-500">Carregando lojas...</p>}

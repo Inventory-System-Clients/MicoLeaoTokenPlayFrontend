@@ -108,7 +108,7 @@ export function TwoFactorSection({ enabled, onChange }: TwoFactorSectionProps) {
             value={password}
             onChange={(event) => setPassword(event.target.value)}
             placeholder="Sua senha"
-            className="h-12 rounded-2xl border border-red-100 bg-white px-4 text-sm font-bold text-brand-black outline-none focus:ring-2 focus:ring-red-300"
+            className="h-12 rounded-2xl border border-red-100 bg-white px-4 text-base font-bold text-brand-black outline-none focus:ring-2 focus:ring-red-300"
           />
           <div className="grid grid-cols-2 gap-2">
             <button

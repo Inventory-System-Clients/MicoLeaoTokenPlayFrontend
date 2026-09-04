@@ -142,7 +142,7 @@ export function MinhaPrivacidadePage() {
               <select
                 value={type}
                 onChange={(event) => setType(event.target.value as PrivacyRequestType)}
-                className="rounded-2xl border border-amber-100 bg-amber-50/60 px-4 py-3 text-sm font-bold outline-none focus:border-brand-yellow focus:ring-2 focus:ring-brand-yellow/25"
+                className="rounded-2xl border border-amber-100 bg-amber-50/60 px-4 py-3 text-base font-bold outline-none focus:border-brand-yellow focus:ring-2 focus:ring-brand-yellow/25"
               >
                 {Object.entries(requestTypeLabels).map(([value, label]) => (
                   <option key={value} value={value}>
@@ -156,7 +156,7 @@ export function MinhaPrivacidadePage() {
                 maxLength={2000}
                 value={message}
                 onChange={(event) => setMessage(event.target.value)}
-                className="min-h-32 rounded-2xl border border-amber-100 bg-amber-50/60 px-4 py-3 text-sm font-bold outline-none focus:border-brand-yellow focus:ring-2 focus:ring-brand-yellow/25"
+                className="min-h-32 rounded-2xl border border-amber-100 bg-amber-50/60 px-4 py-3 text-base font-bold outline-none focus:border-brand-yellow focus:ring-2 focus:ring-brand-yellow/25"
                 placeholder="Descreva o que voce precisa."
               />
               <button

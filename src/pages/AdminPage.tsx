@@ -121,7 +121,7 @@ type CampaignForm = {
 const NEW_CAMPAIGN_PACKAGE_ID = "__new__";
 
 const inputClass =
-  "rounded-xl border border-gray-200 bg-white px-3 py-2.5 text-sm text-brand-black outline-none transition-colors focus:border-brand-yellow focus:ring-2 focus:ring-brand-yellow/20";
+  "rounded-xl border border-gray-200 bg-white px-3 py-2.5 text-base text-brand-black outline-none transition-colors focus:border-brand-yellow focus:ring-2 focus:ring-brand-yellow/20";
 
 const filterInputClass =
   "h-11 rounded-xl border border-amber-100 bg-white px-3 text-sm font-medium text-brand-black outline-none shadow-sm transition-colors placeholder:text-gray-400 focus:border-brand-yellow focus:ring-2 focus:ring-brand-yellow/20";
