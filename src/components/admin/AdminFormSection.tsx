@@ -18,7 +18,7 @@ export function AdminFormSection({
   const showFields = !collapsible || open;
 
   return (
-    <form {...props} className={`grid gap-3 rounded-2xl bg-surface-soft p-4 ${className}`}>
+    <form {...props} className={`grid min-w-0 gap-3 rounded-2xl bg-surface-soft p-4 ${className}`}>
       {collapsible ? (
         <button
           type="button"

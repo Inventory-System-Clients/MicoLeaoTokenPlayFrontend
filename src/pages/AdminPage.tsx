@@ -121,7 +121,7 @@ type CampaignForm = {
 const NEW_CAMPAIGN_PACKAGE_ID = "__new__";
 
 const inputClass =
-  "rounded-xl border border-gray-200 bg-white px-3 py-2.5 text-base text-brand-black outline-none transition-colors focus:border-brand-yellow focus:ring-2 focus:ring-brand-yellow/20";
+  "w-full min-w-0 rounded-xl border border-gray-200 bg-white px-3 py-2.5 text-base text-brand-black outline-none transition-colors focus:border-brand-yellow focus:ring-2 focus:ring-brand-yellow/20";
 
 const filterInputClass =
   "h-11 rounded-xl border border-amber-100 bg-white px-3 text-sm font-medium text-brand-black outline-none shadow-sm transition-colors placeholder:text-gray-400 focus:border-brand-yellow focus:ring-2 focus:ring-brand-yellow/20";
@@ -2457,11 +2457,11 @@ export function AdminPage({
       )}
 
       {!loading && activeTab === "users" && (
-        <section className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+        <section className="grid min-w-0 grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3">
           <AdminFormSection
             title="Criar usuário"
             onSubmit={submitUser}
-            className="sm:col-span-2 xl:col-span-3"
+            className="min-w-0 sm:col-span-2 xl:col-span-3"
             collapsible
           >
             <div className="grid gap-2 sm:grid-cols-2 xl:grid-cols-4">
@@ -2550,7 +2550,7 @@ export function AdminPage({
             </AdminButton>
           </AdminFormSection>
 
-          <div className="sm:col-span-2 xl:col-span-3">
+          <div className="min-w-0 sm:col-span-2 xl:col-span-3">
             <AdminFilterBar
               search={filters.users.search}
               status={filters.users.status}
@@ -2768,8 +2768,8 @@ export function AdminPage({
       )}
 
       {!loading && activeTab === "transactions" && (
-        <section className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
-          <div className="sm:col-span-2 xl:col-span-3">
+        <section className="grid min-w-0 grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3">
+          <div className="min-w-0 sm:col-span-2 xl:col-span-3">
             <AdminFilterBar
               search={filters.transactions.search}
               status={filters.transactions.status}
@@ -2850,7 +2850,7 @@ export function AdminPage({
       )}
 
       {!loading && activeTab === "gameplay" && (
-        <section className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+        <section className="grid min-w-0 grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3">
           <div className="rounded-2xl border border-white/80 bg-white/85 p-3 shadow-sm backdrop-blur sm:col-span-2 xl:col-span-3">
             <div className="grid gap-2 md:grid-cols-2 xl:grid-cols-[1.5fr_150px_150px_150px]">
               <div className="relative md:col-span-2 xl:col-span-1">
@@ -3614,7 +3614,7 @@ export function AdminPage({
             onClear={() => clearFilter("packages")}
           />
 
-          <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+          <div className="grid min-w-0 grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3">
             {packages.length === 0 && (
               <AdminEmptyState icon="🎁" message="Nenhum pacote cadastrado." />
             )}
@@ -3837,7 +3837,7 @@ export function AdminPage({
             onClear={() => clearFilter("levels")}
           />
 
-          <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+          <div className="grid min-w-0 grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3">
             {levels.length === 0 && (
               <AdminEmptyState icon="🏆" message="Nenhum nível cadastrado." />
             )}
@@ -3976,7 +3976,7 @@ export function AdminPage({
             onClear={() => clearFilter("stores")}
           />
 
-          <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+          <div className="grid min-w-0 grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3">
             {stores.length === 0 && (
               <AdminEmptyState icon="🏬" message="Nenhuma loja cadastrada." />
             )}
@@ -4363,7 +4363,7 @@ export function AdminPage({
             onClear={() => clearFilter("products")}
           />
 
-          <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+          <div className="grid min-w-0 grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3">
             {products.length === 0 && (
               <AdminEmptyState icon="🛍️" message="Nenhum produto cadastrado." />
             )}
@@ -4651,7 +4651,7 @@ export function AdminPage({
             </div>
           </form>
 
-          <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+          <div className="grid min-w-0 grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3">
             {ordersLoading && (
               <AdminEmptyState icon="📮" message="Carregando entregas..." />
             )}
@@ -5469,7 +5469,7 @@ export function AdminPage({
             <AdminEmptyState icon="🛡️" message="Nenhum evento registrado ainda." />
           )}
 
-          <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+          <div className="grid min-w-0 grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3">
             {auditLogs.map((log) => (
               <AdminCard key={log.id}>
                 <div className="flex items-start justify-between gap-3">
