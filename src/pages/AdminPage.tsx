@@ -4,9 +4,11 @@
   useMemo,
   useRef,
   useState,
+  type ChangeEvent,
   type FormEvent,
 } from "react";
 import { apiRequest, ApiError } from "@/lib/api";
+import { uploadImageToCloudinary } from "@/lib/cloudinary";
 import type {
   AdminDashboardSummary,
   AdminGameplayLog,
@@ -599,6 +601,7 @@ export function AdminPage({
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [uploadingMachineImage, setUploadingMachineImage] = useState(false);
   const [filters, setFilters] = useState<AdminFilters>(defaultFilters);
   const [tokenBundleAmountBrl, setTokenBundleAmountBrl] = useState("1,00");
   const [tokenBundleCredits, setTokenBundleCredits] = useState("1");
@@ -1564,6 +1567,22 @@ export function AdminPage({
       );
     } finally {
       setSaving(false);
+    }
+  }
+
+  async function handleMachineImageSelect(event: ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    try {
+      setUploadingMachineImage(true);
+      const url = await uploadImageToCloudinary(file);
+      setMachineForm((current) => ({ ...current, imageUrl: url }));
+    } catch {
+      setError("Nao foi possivel enviar a imagem. Tente novamente.");
+    } finally {
+      setUploadingMachineImage(false);
+      event.target.value = "";
     }
   }
 
@@ -4055,14 +4074,34 @@ export function AdminPage({
                 })
               }
             />
-            <input
-              className={inputClass}
-              placeholder="URL da imagem"
-              value={machineForm.imageUrl}
-              onChange={(event) =>
-                setMachineForm({ ...machineForm, imageUrl: event.target.value })
-              }
-            />
+            <div>
+              <input
+                type="file"
+                accept="image/*"
+                className={inputClass}
+                disabled={uploadingMachineImage}
+                onChange={handleMachineImageSelect}
+              />
+              {uploadingMachineImage && (
+                <p className="mt-1 text-xs text-gray-500">Enviando imagem...</p>
+              )}
+              {!uploadingMachineImage && machineForm.imageUrl && (
+                <div className="mt-2 flex items-center gap-2">
+                  <img
+                    src={machineForm.imageUrl}
+                    alt="Pre-visualizacao da maquina"
+                    className="h-16 w-16 rounded-lg object-cover"
+                  />
+                  <button
+                    type="button"
+                    className="text-xs text-red-600 underline"
+                    onClick={() => setMachineForm({ ...machineForm, imageUrl: "" })}
+                  >
+                    Remover
+                  </button>
+                </div>
+              )}
+            </div>
             <div className="grid grid-cols-2 gap-2">
               <input
                 className={inputClass}
