@@ -71,6 +71,15 @@ export async function apiRequest<T>(path: string, options: RequestOptions = {}):
     const data = await response.json().catch(() => null);
     const fallback = await response.text().catch(() => "");
     const fallbackFromCopy = fallback || (await responseCopy.text().catch(() => ""));
+
+    // Token expirado/invalido numa rota autenticada: limpa a sessao e avisa
+    // quem estiver ouvindo (useAuthStore) pra deslogar e redirecionar,
+    // em vez de deixar a tela martelando 401 em toda chamada seguinte.
+    if (response.status === 401 && auth) {
+      setToken(null);
+      window.dispatchEvent(new Event("auth:unauthorized"));
+    }
+
     throw new ApiError(response.status, data?.message || fallbackFromCopy || "Erro ao comunicar com o servidor");
   }
 

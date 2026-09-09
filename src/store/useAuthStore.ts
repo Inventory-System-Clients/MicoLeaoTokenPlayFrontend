@@ -110,3 +110,12 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     set({ privacyAcceptanceRequired: false });
   },
 }));
+
+// Disparado pelo apiRequest quando qualquer chamada autenticada volta 401
+// (token expirado/invalido) - desloga de verdade em vez de deixar a tela
+// tentando renderizar com uma sessao morta.
+if (typeof window !== "undefined") {
+  window.addEventListener("auth:unauthorized", () => {
+    useAuthStore.getState().logout();
+  });
+}
