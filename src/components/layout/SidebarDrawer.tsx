@@ -104,7 +104,10 @@ export function SidebarDrawer({ open, onClose }: SidebarDrawerProps) {
           open ? "translate-x-0" : "-translate-x-full"
         }`}
       >
-        <div className="relative shrink-0 overflow-hidden bg-slate-950 px-5 pb-5 pt-4 text-white">
+        <div
+          className="relative shrink-0 overflow-hidden bg-slate-950 px-5 pb-5 pt-4 text-white"
+          style={{ paddingTop: "calc(env(safe-area-inset-top) + 1rem)" }}
+        >
           <span
             aria-hidden
             className="absolute -right-10 -top-10 h-32 w-32 rounded-full bg-brand-yellow/25"

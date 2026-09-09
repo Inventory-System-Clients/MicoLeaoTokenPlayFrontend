@@ -21,9 +21,12 @@ export function TopNavbar({ wide = false }: { wide?: boolean }) {
 
   return (
     <>
-      <header className="sticky top-0 z-50 border-b border-slate-800 bg-slate-950/95 shadow-lg backdrop-blur">
+      <header
+        className="sticky top-0 z-50 border-b border-slate-800 bg-slate-950/95 shadow-lg backdrop-blur"
+        style={{ paddingTop: "env(safe-area-inset-top)" }}
+      >
         <div
-          className={`mx-auto flex w-full items-center justify-between py-3.5 ${
+          className={`mx-auto flex w-full items-center justify-between py-4 ${
             wide ? "max-w-6xl px-4 sm:px-8" : "max-w-xl px-4 sm:max-w-2xl sm:px-6 lg:max-w-5xl lg:px-8"
           }`}
         >
@@ -32,13 +35,13 @@ export function TopNavbar({ wide = false }: { wide?: boolean }) {
               type="button"
               aria-label="Abrir menu"
               onClick={() => setDrawerOpen(true)}
-              className="flex h-12 w-12 items-center justify-center rounded-full bg-white/10 text-[26px] leading-none text-white transition-transform duration-150 hover:bg-white/15 active:scale-90"
+              className="flex h-14 w-14 items-center justify-center rounded-full bg-white/10 text-[30px] leading-none text-white transition-transform duration-150 hover:bg-white/15 active:scale-90"
             >
               ☰
             </button>
             <Link
               to="/meu-cadastro"
-              className="inline-flex h-12 items-center rounded-full bg-white/10 px-4 text-sm font-black text-white ring-1 ring-white/15 transition hover:bg-white/15 active:scale-95"
+              className="inline-flex h-14 items-center rounded-full bg-white/10 px-4 text-sm font-black text-white ring-1 ring-white/15 transition hover:bg-white/15 active:scale-95"
             >
               <span className="sm:hidden">ID</span>
               <span className="hidden sm:inline">Meu cadastro</span>
