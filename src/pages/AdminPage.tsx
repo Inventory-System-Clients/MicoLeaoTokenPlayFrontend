@@ -602,6 +602,8 @@ export function AdminPage({
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [uploadingMachineImage, setUploadingMachineImage] = useState(false);
+  const [machineImageEdits, setMachineImageEdits] = useState<Record<string, string>>({});
+  const [uploadingMachineEditId, setUploadingMachineEditId] = useState<string | null>(null);
   const [filters, setFilters] = useState<AdminFilters>(defaultFilters);
   const [tokenBundleAmountBrl, setTokenBundleAmountBrl] = useState("1,00");
   const [tokenBundleCredits, setTokenBundleCredits] = useState("1");
@@ -1586,6 +1588,25 @@ export function AdminPage({
     }
   }
 
+  async function handleMachineEditImageSelect(
+    machineId: string,
+    event: ChangeEvent<HTMLInputElement>,
+  ) {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    try {
+      setUploadingMachineEditId(machineId);
+      const url = await uploadImageToCloudinary(file);
+      setMachineImageEdits((current) => ({ ...current, [machineId]: url }));
+    } catch {
+      setError("Nao foi possivel enviar a imagem. Tente novamente.");
+    } finally {
+      setUploadingMachineEditId(null);
+      event.target.value = "";
+    }
+  }
+
   async function submitMachine(event: FormEvent) {
     event.preventDefault();
     setSaving(true);
@@ -1852,6 +1873,10 @@ export function AdminPage({
           ),
           status: data.get("status"),
         },
+      });
+      setMachineImageEdits((current) => {
+        const { [machine.id]: _removed, ...rest } = current;
+        return rest;
       });
       await loadAdminData();
     } catch (err) {
@@ -4209,12 +4234,43 @@ export function AdminPage({
                     className={inputClass}
                     defaultValue={machine.name}
                   />
-                  <input
-                    name="imageUrl"
-                    className={inputClass}
-                    defaultValue={machine.imageUrl ?? ""}
-                    placeholder="URL da imagem"
-                  />
+                  <div>
+                    <input
+                      type="hidden"
+                      name="imageUrl"
+                      value={machineImageEdits[machine.id] ?? machine.imageUrl ?? ""}
+                      readOnly
+                    />
+                    <input
+                      type="file"
+                      accept="image/*"
+                      className={inputClass}
+                      disabled={uploadingMachineEditId === machine.id}
+                      onChange={(event) => handleMachineEditImageSelect(machine.id, event)}
+                    />
+                    {uploadingMachineEditId === machine.id && (
+                      <p className="mt-1 text-xs text-gray-500">Enviando imagem...</p>
+                    )}
+                    {uploadingMachineEditId !== machine.id &&
+                      (machineImageEdits[machine.id] ?? machine.imageUrl) && (
+                        <div className="mt-2 flex items-center gap-2">
+                          <img
+                            src={machineImageEdits[machine.id] ?? machine.imageUrl ?? ""}
+                            alt="Pre-visualizacao da maquina"
+                            className="h-16 w-16 rounded-lg object-cover"
+                          />
+                          <button
+                            type="button"
+                            className="text-xs text-red-600 underline"
+                            onClick={() =>
+                              setMachineImageEdits((current) => ({ ...current, [machine.id]: "" }))
+                            }
+                          >
+                            Remover
+                          </button>
+                        </div>
+                      )}
+                  </div>
                   <div className="grid grid-cols-3 gap-2">
                     <input
                       name="costPerGame"
